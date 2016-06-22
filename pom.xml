@@ -3,16 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.yizhenmoney.damocles</groupId>
-	<artifactId>zookeeper</artifactId>
-	<version>1.0.0</version>
+	<artifactId>damocles-configcenter</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>zookeeper</name>
+	<name>damocles-configcenter</name>
 	<url>测试</url>
 
 	<modules>
-		<module>zookeeper-prop</module>
-		<module>zookeeperProp-client</module>
+		<module>damocles-configcenter-console</module>
+		<module>damocles-configcenter-client</module>
 	</modules>
 
 	<properties>

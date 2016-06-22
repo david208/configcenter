@@ -4,32 +4,23 @@
 
 	<parent>
 		<groupId>com.yizhenmoney.damocles</groupId>
-		<artifactId>zookeeper</artifactId>
-		<version>1.0.0</version>
+		<artifactId>damocles-configcenter</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>zookeeper-prop</artifactId>
-	<packaging>jar</packaging>
+	<artifactId>damocles-configcenter-console</artifactId>
+	<packaging>war</packaging>
 	<description>zookeeper配置文件管理后台</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>nexus</id>
-			<name>Team Nexus Repository</name>
-			<url>http://192.168.220.207:8081/content/repositories/thirdparty/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.yizhenmoney.damocles</groupId>
-			<artifactId>zookeeperProp-client</artifactId>
-			<version>1.0.0</version>
+			<artifactId>damocles-configcenter-client</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<!-- DAMOCLES_CLIENT -->
 		<dependency>
