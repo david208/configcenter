@@ -1,0 +1,38 @@
+body { font-size:12px;}
+input::-ms-clear{display:none;}
+.subtitle{
+	font-size:14px;
+	font-weight:bold;
+	color:#666;
+	padding:10px 5px;
+}
+.m_title {background:url(../images/m_title.jpg) repeat-x;color:#15428B;font-weight:bold;padding:0 5px;line-height:25px;}
+.m_content { padding:10px 10px 10px; background:#F5F5F5; border:1px solid #e7e7e7; margin:3px;}
+.m_content2 { padding:5px 0 5px; background:#FFFFFF; border-bottom:1px solid #e7e7e7;}/* ##F5F5F5 */
+.m_mar { margin:0 5px;}
+.m_btn_box { text-align:center; margin-top:30px;}
+.m_table {border-collapse:collapse;}
+.m_table tr.tr1 td { border:none; border-bottom:1px solid #e7e7e7;line-height:20px; color:#223e70;}/* #e7e7e7 */
+.m_table tr.tr2 td { height:0px; border:none;}
+.m_table tr td {border:1px dotted #CCCCCC; line-height:25px; padding:2px 2px;}
+.no_border tr td, .border_none {border:none;}
+.p_title {background:url(../images/m_title.jpg) repeat-x;color:#15428B;font-weight:bold;padding:0 5px;line-height:25px; font-size:14px;}
+
+#busyDiv{
+	height: 34px;
+	line-height: 34px;
+	border: 2px solid #6699FF;
+	padding-left: 30px;
+	padding-right: 10px;
+	background-color: #FFFFFF;
+	background-image: url(../images/panel_loading.gif);
+	background-repeat: no-repeat;
+	background-position: 10px 8px;
+	position: absolute;
+}
+#busyDivMask{
+	display: block;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
