@@ -3,10 +3,9 @@ package com.yizhenmoney.damocles.configcenter.utils;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
-
-import com.netflix.curator.framework.CuratorFramework;
 
 
 

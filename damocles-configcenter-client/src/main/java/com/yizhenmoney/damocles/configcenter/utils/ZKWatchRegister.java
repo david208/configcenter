@@ -1,14 +1,13 @@
 package com.yizhenmoney.damocles.configcenter.utils;
 
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.api.CuratorWatcher;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher.Event.EventType;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.Stat;
 import org.springframework.stereotype.Component;
-
-import com.netflix.curator.framework.CuratorFramework;
-import com.netflix.curator.framework.api.CuratorWatcher;
 @Component
 public class ZKWatchRegister implements CuratorWatcher{
 	private CuratorFramework zkTools;

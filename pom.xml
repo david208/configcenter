@@ -73,7 +73,7 @@
 		<log4jdbc.version>1.2</log4jdbc.version>
 		<log4jjcl.version>1.7.8</log4jjcl.version>
 		<log4jjul.version>1.7.8</log4jjul.version>
-		
+
 	</properties>
 
 	<!-- 预定义依赖项的version,scope与exclusions,子项目中只需定义groupId 与 artifactId 即可 -->
@@ -94,34 +94,7 @@
 				<artifactId>poi-ooxml</artifactId>
 				<version>${poi.version}</version>
 			</dependency>
-			<!-- SPRINGSIDE begin -->
-			<dependency>
-				<groupId>org.springside</groupId>
-				<artifactId>springside-utils</artifactId>
-				<version>${springside.version}</version>
-				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springside</groupId>
-				<artifactId>springside-core</artifactId>
-				<version>${springside.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springside</groupId>
-				<artifactId>springside-extension</artifactId>
-				<version>${springside.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springside</groupId>
-				<artifactId>springside-metrics</artifactId>
-				<version>${springside.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springside</groupId>
-				<artifactId>springside-redis</artifactId>
-				<version>${springside.version}</version>
-			</dependency>
-			<!-- SPRINGSIDE end -->
+
 
 			<!-- spring -->
 			<dependency>
@@ -167,31 +140,9 @@
 			</dependency>
 			<!-- WEB end -->
 
-			<!-- PERSISTENCE begin -->
-			<!-- hibernate -->
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-entityManager</artifactId>
-				<version>${hibernate.version}</version>
-			</dependency>
 
-			<!-- spring data access -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-orm</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-jpa</artifactId>
-				<version>${spring-data-jpa.version}</version>
-				<exclusions>
-					<exclusion>
-						<artifactId>spring-orm</artifactId>
-						<groupId>org.springframework</groupId>
-					</exclusion>
-				</exclusions>
-			</dependency>
+
+
 
 			<!-- spring aop -->
 			<dependency>
@@ -216,60 +167,6 @@
 				<scope>runtime</scope>
 			</dependency>
 
-			<!-- connection pool -->
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>druid</artifactId>
-				<version>${druid.version}</version>
-				<scope>runtime</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.tomcat</groupId>
-				<artifactId>tomcat-jdbc</artifactId>
-				<version>${tomcat-jdbc.version}</version>
-				<scope>runtime</scope>
-			</dependency>
-			<dependency>
-				<groupId>ojdbc</groupId>
-				<artifactId>ojdbc</artifactId>
-				<version>${ojdbc.version}</version>
-				<scope>runtime</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>com.h2database</groupId>
-				<artifactId>h2</artifactId>
-				<version>${h2.version}</version>
-				<scope>runtime</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>${mysql.version}</version>
-				<scope>runtime</scope>
-			</dependency>
-			<!-- PERSISTENCE end -->
-
-			<!-- SECURITY begin -->
-
-			<!-- shiro -->
-			<dependency>
-				<groupId>org.apache.shiro</groupId>
-				<artifactId>shiro-spring</artifactId>
-				<version>${shiro.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.shiro</groupId>
-				<artifactId>shiro-ehcache</artifactId>
-				<version>${shiro.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-codec</groupId>
-				<artifactId>commons-codec</artifactId>
-				<version>1.9</version>
-			</dependency>
-
 			<!-- spring security -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
@@ -283,12 +180,7 @@
 			</dependency>
 			<!-- SECURITY end -->
 
-			<!-- JSR303 BeanValidator -->
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>${hibernate-validator.version}</version>
-			</dependency>
+
 
 			<!-- JSON begin -->
 			<dependency>
@@ -321,13 +213,6 @@
 				</exclusions>
 			</dependency>
 
-			<!-- 重新定义Java XPath Engine到最新版，避免旧版那些不必要的依赖 -->
-			<dependency>
-				<groupId>jaxen</groupId>
-				<artifactId>jaxen</artifactId>
-				<version>${jaxen.version}</version>
-			</dependency>
-			<!-- XML end -->
 
 			<!-- LOGGING begin -->
 			<dependency>
@@ -405,96 +290,10 @@
 
 			<!-- GENERAL UTILS end -->
 
-			<!-- httpclient -->
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>${httpclient.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>fluent-hc</artifactId>
-				<version>${httpclient.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpcore</artifactId>
-				<version>${httpclient.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpmime</artifactId>
-				<version>${httpclient.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
 
-			<!-- template engine -->
-			<dependency>
-				<groupId>org.freemarker</groupId>
-				<artifactId>freemarker</artifactId>
-				<version>${freemarker.version}</version>
-			</dependency>
 
-			<!-- JMS -->
-			<dependency>
-				<groupId>org.apache.activemq</groupId>
-				<artifactId>activemq-core</artifactId>
-				<version>${activemq.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.apache.activemq.protobuf</groupId>
-						<artifactId>activemq-protobuf</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework.osgi</groupId>
-						<artifactId>spring-osgi-core</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.osgi</groupId>
-						<artifactId>org.osgi.core</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.fusesource.mqtt-client</groupId>
-						<artifactId>mqtt-client</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.apache.activemq</groupId>
-						<artifactId>kahadb</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-jms</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+
+
 
 			<!-- pojo copy -->
 			<dependency>
@@ -509,41 +308,13 @@
 				</exclusions>
 			</dependency>
 
-			<!-- dubbo -->
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>dubbo</artifactId>
-				<version>${dubbo.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>spring</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.zookeeper</groupId>
-				<artifactId>zookeeper</artifactId>
-				<version>${zookeeper.version}</version>
 
-			</dependency>
 			<dependency>
-				<groupId>com.github.sgroschupf</groupId>
-				<artifactId>zkclient</artifactId>
-				<version>${zkclient.version}</version>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-commons</artifactId>
+				<version>1.9.2.RELEASE</version>
 			</dependency>
-			<dependency>
-				<groupId>com.netflix.curator</groupId>
-				<artifactId>curator-framework</artifactId>
-				<version>${curator.version}</version>
-			</dependency>
-			<!-- commons-pool -->
-			<!-- email -->
-			<dependency>
-				<groupId>javax.mail</groupId>
-				<artifactId>mail</artifactId>
-				<version>1.4.7</version>
-			</dependency>
+
 			<dependency>
 				<groupId>javax.activation</groupId>
 				<artifactId>activation</artifactId>
@@ -563,11 +334,6 @@
 				<version>${javax.inject-version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>com.jianzhou</groupId>
-				<artifactId>jzsms</artifactId>
-				<version>${jianzhou.version}</version>
-			</dependency>
 
 			<!-- Servlet -->
 			<dependency>
@@ -640,46 +406,7 @@
 				<scope>test</scope>
 			</dependency>
 
-			<!-- hystrix begin -->
-			<dependency>
-				<groupId>com.netflix.hystrix</groupId>
-				<artifactId>hystrix-core</artifactId>
-				<version>${hystrix.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<!-- hystrix end -->
 
-			<!-- jolokia Restful JMX begin -->
-			<dependency>
-				<groupId>org.jolokia</groupId>
-				<artifactId>jolokia-core</artifactId>
-				<version>${jolokia.version}</version>
-			</dependency>
-			<!-- jolokia end -->
-
-			<!-- Monitor begin -->
-			<!-- javasimon -->
-			<dependency>
-				<groupId>org.javasimon</groupId>
-				<artifactId>javasimon-spring</artifactId>
-				<version>${javasimon.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.javasimon</groupId>
-				<artifactId>javasimon-jdbc4</artifactId>
-				<version>${javasimon.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.javasimon</groupId>
-				<artifactId>javasimon-console-embed</artifactId>
-				<version>${javasimon.version}</version>
-			</dependency>
-			<!-- Monitor end -->
 
 			<!-- selenium 2.0 -->
 			<dependency>

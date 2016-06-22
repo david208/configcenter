@@ -28,29 +28,7 @@
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
 		</dependency>
-		<!-- SPRINGSIDE begin -->
-		<dependency>
-			<groupId>org.springside</groupId>
-			<artifactId>springside-utils</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springside</groupId>
-			<artifactId>springside-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springside</groupId>
-			<artifactId>springside-extension</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springside</groupId>
-			<artifactId>springside-metrics</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springside</groupId>
-			<artifactId>springside-redis</artifactId>
-		</dependency>
-		<!-- SPRINGSIDE end -->
+
 
 		<!-- spring -->
 		<dependency>
@@ -72,23 +50,11 @@
 			<artifactId>sitemesh</artifactId>
 		</dependency>
 		<!-- WEB end -->
-
-		<!-- PERSISTENCE begin -->
-		<!-- hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entityManager</artifactId>
-		</dependency>
-
-		<!-- spring data access -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
+			<artifactId>spring-data-commons</artifactId>
 		</dependency>
+
 
 		<!-- spring aop -->
 		<dependency>
@@ -109,22 +75,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- connection pool -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>ojdbc</groupId>
-			<artifactId>ojdbc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<!-- PERSISTENCE end -->
+
 
 		<!-- SECURITY begin -->
 		<dependency>
@@ -137,11 +88,7 @@
 		</dependency>
 		<!-- SECURITY end -->
 
-		<!-- JSR303 BeanValidator -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-		</dependency>
+
 
 		<!-- JSON begin -->
 		<dependency>
@@ -185,11 +132,7 @@
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 		</dependency>
-		<!-- 重新定义Java XPath Engine到最新版，避免旧版那些不必要的依赖 -->
-		<dependency>
-			<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-		</dependency>
+
 		<!-- XML end -->
 
 		<!-- LOGGING begin -->
@@ -227,69 +170,20 @@
 		</dependency>
 		<!-- GENERAL UTILS end -->
 
-		<!-- OTHER TOOLS begin -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>fluent-hc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
 		</dependency>
 
-		<!-- email -->
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-		</dependency>
-		<!-- OTHER TOOLS end -->
+
 
 		<!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 		</dependency>
-
-		<!-- tpp -->
-		<dependency>
-			<groupId>com.jianzhou</groupId>
-			<artifactId>jzsms</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>1.8.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>net.sourceforge.jexcelapi</groupId>
-			<artifactId>jxl</artifactId>
-			<version>2.6.12</version>
-		</dependency>
-
-		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>2.4</version>
-			<classifier>jdk13</classifier>
-		</dependency>
-
-		<dependency>
-			<groupId>jdom</groupId>
-			<artifactId>jdom</artifactId>
-			<version>b9</version>
-		</dependency>
-
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -300,89 +194,8 @@
 			<artifactId>jstl</artifactId>
 		</dependency>
 
-		<!-- hystrix -->
-		<dependency>
-			<groupId>com.netflix.hystrix</groupId>
-			<artifactId>hystrix-core</artifactId>
-		</dependency>
 
-		<!-- jolokia Restful JMX begin -->
-		<dependency>
-			<groupId>org.jolokia</groupId>
-			<artifactId>jolokia-core</artifactId>
-		</dependency>
-		<!-- jolokia end -->
 
-		<!-- Monitor begin -->
-		<!-- javasimon -->
-		<dependency>
-			<groupId>org.javasimon</groupId>
-			<artifactId>javasimon-spring</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.javasimon</groupId>
-			<artifactId>javasimon-jdbc4</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.javasimon</groupId>
-			<artifactId>javasimon-console-embed</artifactId>
-		</dependency>
-		<!-- Monitor end -->
-
-		<!-- JMS begin -->
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-core</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.activemq.protobuf</groupId>
-					<artifactId>activemq-protobuf</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.springframework.osgi</groupId>
-					<artifactId>spring-osgi-core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.osgi</groupId>
-					<artifactId>org.osgi.core</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.fusesource.mqtt-client</groupId>
-					<artifactId>mqtt-client</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.activemq</groupId>
-					<artifactId>kahadb</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jms</artifactId>
-		</dependency>
-		<!-- JMS end -->
-
-		<!-- dubbo -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>dubbo</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.zookeeper</groupId>
-			<artifactId>zookeeper</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.github.sgroschupf</groupId>
-			<artifactId>zkclient</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.netflix.curator</groupId>
-			<artifactId>curator-framework</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
