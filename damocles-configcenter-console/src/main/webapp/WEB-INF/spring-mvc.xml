@@ -36,6 +36,9 @@
 	<!-- 容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL-->	
 	<mvc:default-servlet-handler/>
 	
+	<!-- 访问静态资源文件 -->
+	<mvc:resources mapping="/static/**" location="/static/"/>
+	
 	<!-- 定义无需Controller的url<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:/index"/>
 	
