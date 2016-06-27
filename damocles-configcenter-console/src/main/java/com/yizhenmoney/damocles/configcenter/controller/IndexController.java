@@ -15,11 +15,11 @@ import com.yizhenmoney.damocles.configcenter.vo.ResultVo;
 @RequestMapping("")
 @Controller
 public class IndexController {
-	@Autowired
-	private LoginUserHelper loginUserHelper;
+//	@Autowired
+//	private LoginUserHelper loginUserHelper;
 	@RequestMapping("/index")
 	public String index(Model model) {
-		model.addAttribute("userName", loginUserHelper.loginUserName());
+		//model.addAttribute("userName", loginUserHelper.loginUserName());
 		return "/index";
 	}
 	

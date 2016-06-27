@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yizhenmoney.damocles.configcenter.config.PropritesConfig;
 import com.yizhenmoney.damocles.configcenter.helper.LoginUserHelper;
-import com.yizhenmoney.damocles.configcenter.utils.ZooKeeperUtils;
 import com.yizhenmoney.damocles.configcenter.vo.PageVo;
 import com.yizhenmoney.damocles.configcenter.vo.ResultVo;
 import com.yizhenmoney.damocles.configcenter.vo.ZookeeperTree;
@@ -36,14 +35,14 @@ import com.yizhenmoney.damocles.configcenter.vo.ZookeeperTree;
 @RequestMapping("/test")
 @Controller
 public class TestTxtController {
-	@Autowired
-	private LoginUserHelper loginUserHelper;
+//	@Autowired
+//	private LoginUserHelper loginUserHelper;
 
 	@RequestMapping(value = { "", "/", "/list" })
 	public String index(Model model) {
-		String userName = loginUserHelper.loginUserName();
-		String role=loginUserHelper.getRole(userName);
-		model.addAttribute("roleName", role);
+//		String userName = loginUserHelper.loginUserName();
+//		String role=loginUserHelper.getRole(userName);
+//		model.addAttribute("roleName", role);
 		return "/test/list";
 	}
 
@@ -71,9 +70,9 @@ public class TestTxtController {
 			Model model, ServletRequest request) {
 		try {
 			
-			String userName = loginUserHelper.loginUserName();
-			String password = loginUserHelper
-							.getPassWordByUserName(userName);
+			String userName = "";//loginUserHelper.loginUserName();
+			String password ="";// loginUserHelper
+						//	.getPassWordByUserName(userName);
 			zk= new ZooKeeper(propritesConfig.getUrl(), 10000,null);
 			zk.addAuthInfo("digest", (userName+":"+password).getBytes());
 			
@@ -231,8 +230,8 @@ public class TestTxtController {
 			String[] roles = role.substring(0,role.lastIndexOf(",")).split(",");
 			List<ACL> acls = new ArrayList<ACL>();
 			for (String username : roles) {
-				String roleName = loginUserHelper.getRole(username);
-				String password = loginUserHelper.getPassWordByUserName(username);
+				String roleName = ""; //loginUserHelper.getRole(username);
+				String password = "" ;//loginUserHelper.getPassWordByUserName(username);
 				String auth = username + ":" + password;
 				Id id1 = new Id("digest",
 						DigestAuthenticationProvider.generateDigest(auth));
@@ -280,7 +279,6 @@ public class TestTxtController {
 	public ResultVo delete(String nodeUrl) {
 		try {
 			if (StringUtils.isNotBlank(nodeUrl)) {
-				ZooKeeperUtils.delete(nodeUrl);
 			}
 			return new ResultVo(0, "修改成功");
 		} catch (Exception e) {
@@ -312,18 +310,18 @@ public class TestTxtController {
 		return true;
 	}
 	
-	@RequestMapping("/getAllUser")
+	/*@RequestMapping("/getAllUser")
 	@ResponseBody
 	public List<Map<String,Object>> getAllUser(){
 		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
-		Map<String, Object> userMap = loginUserHelper.getAllUser();
+		//Map<String, Object> userMap = loginUserHelper.getAllUser();
 		for (Map.Entry<String, Object> user : userMap.entrySet()) {
 			String username = (String) user.getKey();
 			Map<String, Object> resultMap = new HashMap<String, Object>();
-			resultMap.put("roleCode", loginUserHelper.getRole(username));
+			//resultMap.put("roleCode", loginUserHelper.getRole(username));
 			resultMap.put("roleName", username);
 			result.add(resultMap);
 		}	
 		return result;
-	}
+	}*/
 }
