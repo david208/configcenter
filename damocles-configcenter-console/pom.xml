@@ -56,6 +56,21 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<version>7.0.54</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-juli</artifactId>
+			<version>7.0.52</version>
+		</dependency>
+
 		<!-- spring aop -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -255,8 +270,8 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.eclipse.jetty.aggregate</groupId>
+		<!-- <dependency>
+			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
 			<scope>provided</scope>
 		</dependency>
@@ -264,7 +279,7 @@
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-jsp</artifactId>
 			<scope>provided</scope>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
