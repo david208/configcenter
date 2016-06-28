@@ -9,11 +9,11 @@ public class EnvInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = 6420175833245289166L;
 
-	private String token;
+	private String token;// token的短名称
 
-	private String memo;
+	private String memo;// 备注
 
-	private String tag;
+	private String tag;// 标签
 
 	public String getToken() {
 		return token;
@@ -39,5 +39,4 @@ public class EnvInfo implements Serializable {
 		this.tag = tag;
 	}
 
-	
 }
