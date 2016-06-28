@@ -14,6 +14,10 @@ import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 
+/**
+ * @author shim
+ *
+ */
 public abstract class DESCoder extends Coder {
 	/**
 	 * ALGORITHM 算法 <br>

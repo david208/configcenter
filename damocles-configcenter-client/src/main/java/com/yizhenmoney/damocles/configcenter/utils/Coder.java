@@ -9,6 +9,10 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
+/**
+ * @author shim
+ *
+ */
 public abstract class Coder {
 	public static final String KEY_SHA = "SHA";
 	public static final String KEY_MD5 = "MD5";

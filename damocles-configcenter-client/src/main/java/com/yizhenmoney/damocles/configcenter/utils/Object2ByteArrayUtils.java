@@ -7,8 +7,16 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+/**
+ * @author shim
+ *
+ */
 public class Object2ByteArrayUtils {
 
+	/** 字节数组转为对象
+	 * @param bytes
+	 * @return
+	 */
 	@SuppressWarnings({ "unchecked" })
 	public static <T extends Serializable> T ByteToObject(byte[] bytes) {
 		ByteArrayInputStream bi = null;
@@ -44,6 +52,10 @@ public class Object2ByteArrayUtils {
 		return obj;
 	}
 
+	/** 对象转为字节数组
+	 * @param obj
+	 * @return
+	 */
 	public static byte[] ObjectToByte(Object obj) {
 		byte[] bytes = null;
 		ByteArrayOutputStream bo = null;

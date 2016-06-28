@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
-import com.yizhenmoney.damocles.configcenter.service.ZooKeeperPropertiesService;
+import com.yizhenmoney.damocles.configcenter.service.client.ZooKeeperPropertiesService;
 import com.yizhenmoney.damocles.configcenter.vo.Token;
 
 
