@@ -1,6 +1,8 @@
 package com.yizhenmoney.damocles.configcenter.vo;
 
+import java.beans.Transient;
 import java.io.Serializable;
+import java.util.Map;
 
 public class EnvInfo implements Serializable {
 
@@ -13,7 +15,9 @@ public class EnvInfo implements Serializable {
 
 	private String memo;// 备注
 
-	private String tag;// 标签
+	private String longToken;// 完整token
+
+	private Map<String, PropertyInfo> properties;
 
 	public String getToken() {
 		return token;
@@ -31,12 +35,22 @@ public class EnvInfo implements Serializable {
 		this.memo = memo;
 	}
 
-	public String getTag() {
-		return tag;
+	@Transient
+	public Map<String, PropertyInfo> getProperties() {
+		return properties;
 	}
 
-	public void setTag(String tag) {
-		this.tag = tag;
+	public void setProperties(Map<String, PropertyInfo> properties) {
+		this.properties = properties;
+	}
+
+	@Transient
+	public String getLongToken() {
+		return longToken;
+	}
+
+	public void setLongToken(String longToken) {
+		this.longToken = longToken;
 	}
 
 }
