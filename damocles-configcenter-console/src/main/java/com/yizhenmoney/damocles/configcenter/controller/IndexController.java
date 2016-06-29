@@ -15,19 +15,23 @@ import com.yizhenmoney.damocles.configcenter.vo.ResultVo;
 @RequestMapping("")
 @Controller
 public class IndexController {
-//	@Autowired
-//	private LoginUserHelper loginUserHelper;
+	// @Autowired
+	// private LoginUserHelper loginUserHelper;
 	@RequestMapping("/index")
 	public String index(Model model) {
-		//model.addAttribute("userName", loginUserHelper.loginUserName());
+		// model.addAttribute("userName", loginUserHelper.loginUserName());
 		return "/index";
 	}
-	
+
 	@RequestMapping("/login")
 	public String login() {
 		return "/login";
 	}
-	
+
+	@RequestMapping("/403")
+	public String m403() {
+		return "/403";
+	}
 
 	@RequestMapping("/menu")
 	@ResponseBody

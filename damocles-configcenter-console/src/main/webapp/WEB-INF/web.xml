@@ -9,8 +9,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath*:/applicationContext.xml
-			
+			classpath*:/applicationContext.xml	
 		</param-value>
 	</context-param>
 
@@ -25,20 +24,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!-- Spring MVC Servlet -->
-	<servlet>
-		<servlet-name>springServlet</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring-mvc.xml</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>springServlet</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
+
 
 	<!-- Filter 定义 -->
 	<!-- Character Encoding filter -->
@@ -61,60 +47,33 @@
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
 
-	<!-- Open Entity Manager in View filter -->
-	<!-- <filter>
-		<filter-name>openEntityManagerInViewFilter</filter-name>
-		<filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>openEntityManagerInViewFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
-	
+
 	<!-- Spring Security filter -->
-	<!-- <filter>
+	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
-	
+
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
-	
-	<!-- Shiro Security filter -->
-	<!-- 
-	<filter>
-		<filter-name>shiroFilter</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>shiroFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
- 	-->
-	<!-- Cache Control Header filter -->
-	<!-- 
-	<filter>
-		<filter-name>cacheControlHeaderFilter</filter-name>
-		<filter-class>com.yizhenmoney.damocles.fortune.web.filter.CacheControlHeaderFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>cacheControlHeaderFilter</filter-name>
-		<url-pattern>/static/*</url-pattern>
-	</filter-mapping>
- 	 -->
-	<!-- SiteMesh Web-Page Layout filter -->
-	<!-- <filter>
-		<filter-name>sitemeshFilter</filter-name>
-		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>sitemeshFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
+
+
+	<!-- Spring MVC Servlet -->
+	<servlet>
+		<servlet-name>springServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 
 	<!-- 出错页面定义 -->
 	<error-page>

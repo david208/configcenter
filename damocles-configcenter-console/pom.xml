@@ -95,11 +95,15 @@
 		<!-- SECURITY begin -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-taglibs</artifactId>
+			<artifactId>spring-security-ldap</artifactId>
 		</dependency>
 		<!-- SECURITY end -->
 
@@ -270,24 +274,19 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-webapp</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-jsp</artifactId>
-			<scope>provided</scope>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.eclipse.jetty</groupId> <artifactId>jetty-webapp</artifactId> 
+			<scope>provided</scope> </dependency> <dependency> <groupId>org.eclipse.jetty</groupId> 
+			<artifactId>jetty-jsp</artifactId> <scope>provided</scope> </dependency> -->
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-remote-driver</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.icegreen</groupId>
@@ -314,24 +313,7 @@
 			</plugin>
 
 			<!-- 增加functional test的Source目录 -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>add-functional-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-test-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>src/test/functional</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+
 
 			<!-- test插件, 仅测试名称为*Test的类,使用支持分组测试的surefire-junit47 driver -->
 			<plugin>
@@ -407,67 +389,6 @@
 
 		</plugins>
 
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>build-helper-maven-plugin</artifactId>
-										<versionRange>[1.0,)</versionRange>
-										<goals>
-											<goal>test-compile</goal>
-											<goal>compile</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-enforcer-plugin</artifactId>
-										<versionRange>[1.0.0,)</versionRange>
-										<goals>
-											<goal>enforce</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											build-helper-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.8,)
-										</versionRange>
-										<goals>
-											<goal>add-test-source</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 
 	<profiles>
@@ -512,64 +433,5 @@
 			</build>
 		</profile>
 
-		<!-- 刷新开发环境数据库 -->
-		<profile>
-			<id>refresh-db</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<configuration>
-							<target>
-								<property
-									file="src/main/resources/application.development.properties" />
-								<property file="src/main/resources/application.properties" />
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
-									password="${jdbc.password}" onerror="continue"
-									encoding="${project.build.sourceEncoding}">
-									<classpath refid="maven.test.classpath" />
-									<transaction src="src/main/resources/sql/oracle/schema.sql" />
-									<transaction src="src/main/resources/sql/oracle/init.sql" />
-									<transaction src="src/test/resources/data/oracle/import-data.sql" />
-								</sql>
-							</target>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-
-		<!--打包可执行war包, 基于Jetty -->
-		<profile>
-			<id>standalone</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-								<configuration>
-									<finalName>${project.parent.artifactId}</finalName>
-									<descriptors>
-										<descriptor>assembly-standalone.xml</descriptor>
-									</descriptors>
-									<archive>
-										<manifest>
-											<mainClass>com.yizhenmoney.damocles.Main</mainClass>
-										</manifest>
-									</archive>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 	</profiles>
 </project>

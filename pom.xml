@@ -25,7 +25,7 @@
 		<druid.version>1.0.9</druid.version>
 		<tomcat-jdbc.version>7.0.54</tomcat-jdbc.version>
 		<shiro.version>1.2.3</shiro.version>
-		<spring-security.version>3.1.1.RELEASE</spring-security.version>
+		<spring-security.version>4.1.0.RELEASE</spring-security.version>
 		<activemq.version>5.7.0</activemq.version>
 		<hibernate-validator.version>5.0.3.Final</hibernate-validator.version>
 		<jackson.version>2.4.0</jackson.version>
@@ -170,12 +170,17 @@
 			<!-- spring security -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring-security.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
 				<version>${spring-security.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-taglibs</artifactId>
+				<artifactId>spring-security-ldap</artifactId>
 				<version>${spring-security.version}</version>
 			</dependency>
 			<!-- SECURITY end -->
@@ -307,11 +312,8 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			<!-- <dependency>
-				<groupId>org.eclipse.jetty.aggregate</groupId>
-				<artifactId>jetty-all</artifactId>
-				<version>9.2.14.v20151106</version>
-			</dependency> -->
+			<!-- <dependency> <groupId>org.eclipse.jetty.aggregate</groupId> <artifactId>jetty-all</artifactId> 
+				<version>9.2.14.v20151106</version> </dependency> -->
 
 			<dependency>
 				<groupId>org.springframework.data</groupId>
@@ -703,9 +705,35 @@
 
 	<distributionManagement>
 		<repository>
-			<id>nexus</id>
-			<name>Team Nexus Repository</name>
-			<url>http://192.168.220.207:8081/content/repositories/thirdparty/</url>
+			<id>nexus-releases</id>
+			<name>Team Nexus public Repository</name>
+			<url>http://192.168.220.207:8081/content/repositories/releases/</url>
 		</repository>
+		<snapshotRepository>
+			<uniqueVersion>true</uniqueVersion>
+			<id>nexus-snapshots</id>
+			<name>Snapshots</name>
+			<url>http://192.168.220.207:8081/content/repositories/snapshots/</url>
+			<layout>default</layout>
+		</snapshotRepository>
 	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<releases>
+				<enabled>false</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+				<checksumPolicy>fail</checksumPolicy>
+			</snapshots>
+			<id>nexus-snapshots</id>
+			<name>Snapshots</name>
+			<url>http://192.168.220.207:8081/content/repositories/snapshots/</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 </project>
