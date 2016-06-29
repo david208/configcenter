@@ -256,14 +256,15 @@ LI {
 }
 </STYLE>
 <script type="text/javascript">
-if(top != window){
-	top.location.href = window.location.href;
-}
+	if (top != window) {
+		top.location.href = window.location.href;
+	}
 </script>
-<script src="${ctx}/static/fusionChart/js/FusionCharts.js" type="text/javascript"></script>
+<script src="${ctx}/static/fusionChart/js/FusionCharts.js"
+	type="text/javascript"></script>
 </HEAD>
 <BODY>
-	<form action="${ctx}/j_spring_security_check" method="post">
+	<form action="${ctx}/login" method="post">
 		<DIV id=back_login_container>
 			<DIV id=back_login_head>
 				<IMG src="static/styles/loginImg/back-login-top.jpg">
@@ -275,9 +276,9 @@ if(top != window){
 				<DIV id=back_login_right>
 					<UL>
 						<LI><LABEL for=Name>用户名：</LABEL><INPUT tabIndex=1 size=15
-							type=text name=j_username></LI>
+							type=text name=username></LI>
 						<LI><LABEL for=Password>密&nbsp;&nbsp;码：</LABEL><INPUT
-							tabIndex=2 size=15 type=password name=j_password></LI>
+							tabIndex=2 size=15 type=password name=password></LI>
 					</UL>
 					<H2>
 						<INPUT class=denglu
@@ -288,11 +289,14 @@ if(top != window){
 			</DIV>
 		</DIV>
 		<div id="chartDiv" align="center">
-	 		<script type="text/javascript">
-     			var myChart1 = new FusionCharts("${ctx}/static/funsionChart/swf/Column2D.swf", "myChartId", "600", "350");
-     			myChart1.setDataXML("<graph baseFont='SunSim' baseFontSize='12' caption='分析' subcaption='' yAxisMinValue='51650.1' yAxisMaxValue='71118.3' xaxisname='日期' yaxisname='数量' hovercapbg='FFECAA' hovercapborder='F47E00' formatNumberScale='0' decimalPrecision='0' showvalues='1' numdivlines='10' numVdivlines='0' shownames='1' rotateNames='1'><set name='2009-10-04' value='57653' color='AFD8F8'/><set name='2009-10-05' value='57389' color='F6BD0F'/><set name='2009-10-06' value='59256' color='8BBA00'/><set name='2009-10-07' value='62762' color='FF8E46'/><set name='2009-10-08' value='63287' color='008E8E'/><set name='2009-10-09' value='60109' color='D64646'/><set name='2009-10-10' value='64653' color='8E468E'/><set name='2009-10-11' value='61687' color='588526'/></graph>");
-     			myChart1.render("chartDiv");
-  			</script>
+			<script type="text/javascript">
+				var myChart1 = new FusionCharts(
+						"${ctx}/static/funsionChart/swf/Column2D.swf",
+						"myChartId", "600", "350");
+				myChart1
+						.setDataXML("<graph baseFont='SunSim' baseFontSize='12' caption='分析' subcaption='' yAxisMinValue='51650.1' yAxisMaxValue='71118.3' xaxisname='日期' yaxisname='数量' hovercapbg='FFECAA' hovercapborder='F47E00' formatNumberScale='0' decimalPrecision='0' showvalues='1' numdivlines='10' numVdivlines='0' shownames='1' rotateNames='1'><set name='2009-10-04' value='57653' color='AFD8F8'/><set name='2009-10-05' value='57389' color='F6BD0F'/><set name='2009-10-06' value='59256' color='8BBA00'/><set name='2009-10-07' value='62762' color='FF8E46'/><set name='2009-10-08' value='63287' color='008E8E'/><set name='2009-10-09' value='60109' color='D64646'/><set name='2009-10-10' value='64653' color='8E468E'/><set name='2009-10-11' value='61687' color='588526'/></graph>");
+				myChart1.render("chartDiv");
+			</script>
 		</div>
 		<DIV id=back_login_footer>版权@意真（上海）金融信息服务有限公司</DIV>
 	</FORM>
