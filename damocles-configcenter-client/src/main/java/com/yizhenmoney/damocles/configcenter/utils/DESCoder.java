@@ -132,7 +132,7 @@ public abstract class DESCoder extends Coder {
 		MessageDigest mdInst = MessageDigest.getInstance("MD5");
 		byte[] input = s.getBytes(CharEncoding.UTF_8);
 		mdInst.update(input);
-		return Base64.encodeBase64String(mdInst.digest());
+		return Base64.encodeBase64URLSafeString(mdInst.digest());
 	}
 
 	public static String md5ToHex(String s) throws Exception {

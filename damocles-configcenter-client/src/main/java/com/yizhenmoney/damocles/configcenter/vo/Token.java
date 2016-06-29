@@ -9,11 +9,11 @@ public class Token implements Serializable {
 	 */
 	private static final long serialVersionUID = 6420175833245289166L;
 
-	private String name;//token的短名称
+	private String name;// token的短名称
 
-	private String auth;//认证
+	private String auth;// 认证
 
-	private String path;//路径
+	private String path;// 路径
 
 	public String getAuth() {
 		return auth;
