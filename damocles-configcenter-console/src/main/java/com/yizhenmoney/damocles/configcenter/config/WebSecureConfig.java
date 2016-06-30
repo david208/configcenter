@@ -3,7 +3,11 @@ package com.yizhenmoney.damocles.configcenter.config;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.curator.framework.api.transaction.CuratorTransactionFinal;
+import org.apache.zookeeper.data.ACL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +27,11 @@ import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.yizhenmoney.damocles.configcenter.service.server.PropertiesServerInter;
+import com.yizhenmoney.damocles.configcenter.service.server.PropertiesServerService;
+import com.yizhenmoney.damocles.configcenter.vo.EnvInfo;
+import com.yizhenmoney.damocles.configcenter.vo.PropertyInfo;
+
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
@@ -32,6 +41,12 @@ public class WebSecureConfig extends WebSecurityConfigurerAdapter {
 
 	@Value("${ldap.url}")
 	private String ldapUrl;
+
+	@Bean
+	public PropertiesServerInter propertiesServerService() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		return new PropertiesServerService("admin:123456", "192.168.220.194:2181");
+
+	}
 
 	@Bean
 	public Md5PasswordEncoder passwordEncoder() {
@@ -50,6 +65,7 @@ public class WebSecureConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
+		http.headers().frameOptions().disable();
 		http.authorizeRequests().antMatchers("/static/**").permitAll().anyRequest().hasAuthority(ldapGroup).and()
 				.formLogin().loginPage("/login").defaultSuccessUrl("/", true).failureUrl("/login?error").permitAll();
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandlerImpl());
