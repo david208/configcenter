@@ -25,73 +25,88 @@
 	type="text/javascript"></script>
 <script src="${ctx}/static/jquery-easyui-1.3.5/jquery.easyui.min.js"
 	type="text/javascript"></script>
-	<script src="${ctx}/static\jquery-easyui-1.3.5\extension\common.js"
+<script src="${ctx}/static\jquery-easyui-1.3.5\extension\common.js"
 	type="text/javascript"></script>
 <script src="${ctx}/static/js/index.js" type="text/javascript"></script>
 <script>
 	$(function() {
 		InitLeftMenu();
-	})
-	
+	});
+
+	function append(item,node) {
+		if(item.name == 'add'){
+			if(node.attributes.type==1){
+				var system = node.text;
+				$.post("${ctx}/addVersion?system="+system+"&version="+"1.324",function(data){
+					alert(data);
+				});
+			}
+			else if(node.attributes.type==2){
+			 var system =	$('#menu').tree("getParent",node.target).text;
+			 var version = node.text;
+
+			}
+		}
+		else if (item.name == 'copy'){
+			
+		}
+	}
 
 	//初始化左侧
 	function InitLeftMenu() {
 
-		$('#menu').tree({
-			url : '${ctx}/menu2',
-				onClick: function(node){
-					if(null != node.attributes.url)
-						{
-						createTabsIframe('tabs',node.text,"${ctx}"+ node.attributes.url);
+		$('#menu').tree(
+				{
+					url : '${ctx}/menu2',
+					onClick : function(node) {
+						if (3 == node.attributes.type) {
+							createTabsIframe('tabs', node.text, "${ctx}"
+									+ node.attributes.url);
 						} // 在用户点击的时候提示
-				}
+					},
+					onContextMenu : function(e, node) {
+						e.preventDefault();
+						// 查找节点
+						$('#menu').tree('select', node.target);
 
-		});
+						
+						
+						$('#mm').menu({    
+						    onClick:function(item){    
+						    	append(item,node);
+						    }
+						    
+						}); 
+						
+						var add = $('#add')[0];
+						var copy = $('#copy')[0];
+						if (1 == node.attributes.type) {
+							$('#mm').menu('disableItem', copy);
+							$('#mm').menu('enableItem', add);
 
-		/*   $(".easyui-accordion1").empty();
-		  var menulist = "";
-		 
-		  $.each(_menus, function(i, menu) {
-		      menulist += '<div title="'+menu.name+'"  style="overflow:auto;">';
-			menulist += '<ul>';
-		
-			
-			$.each(menu.children, function(j, m2) {
-				 menulist += '<li><div title="'+m2.name+'">'+menu.name;
-					menulist += '<ul>';
-					  menulist += '</ul></div></li>';
-					
-					
-		      $.each(m2.children, function(k, m3) {
-				menulist += '<li><div><a target="mainFrame" href="${ctx}' + m3.url + '" >' + m3.name + '</a></div></li> ';
-		      }); 
-		      
-			 });
-		      menulist += '</ul></div>';
-		  });
+						} else if (3 == node.attributes.type) {
+							$('#mm').menu('disableItem', add);
+							$('#mm').menu('enableItem', copy);
+						} else {
+							$('#mm').menu('enableItem', copy);
+							$('#mm').menu('enableItem', add);
+						} 
 
-		$(".easyui-accordion1").append(menulist);
-		
-		$('.easyui-accordion1 li a').click(function(){
-			var tabTitle = $(this).text();
-			var url = $(this).attr("href");
-			addTab(tabTitle,url);
-			$('.easyui-accordion1 li div').removeClass("selected");
-			$(this).parent().addClass("selected");
-		}).hover(function(){
-			$(this).parent().addClass("hover");
-		},function(){
-			$(this).parent().removeClass("hover");
-		});
+						// 显示快捷菜单
+						$('#mm').menu('show', {
+							left : e.pageX,
+							top : e.pageY
+						}); 
+					}
 
-		$(".easyui-accordion1").accordion(); */
+				});
 	}
 </script>
 </head>
 
 <body class="easyui-layout" style="overflow-y: hidden" scroll="no">
 	<div region="north" split="true" border="false"
-		style="overflow: hidden; height: 65px; background: url(./static/images/logo1.jpg) #7f99be; background-repeat: no-repeat; line-height: 20px; color: #fff; font-family: Verdana, 微软雅黑, 黑体">
+		style="overflow: hidden; height: 65px; background: url(${ctx}/static/images/logo1.jpg) #7f99be; background-repeat: no-repeat; line-height: 20px; color: #fff; font-family: Verdana, 微软雅黑, 黑体">
 		<span style="float: right; padding-right: 20px;" class="head">欢迎
 			${userName} <a href="/sms/logout">安全退出</a>
 		</span>
@@ -100,7 +115,7 @@
 				onclick="window.location.reload();"></div>
 			<div style="padding-left: 90px; padding-top: 25px">
 				<!-- Damocles Sysetem V1.0 -->
-				<b><font style="font-size: 20px">意真金融短信平台 </font></b> V1.0.0
+				<b><font style="font-size: 20px">意真金融配置中心 </font></b> V1.0.0
 			</div>
 		</div>
 	</div>
@@ -125,15 +140,10 @@
 		</div>
 	</div>
 
-	<div id="mm" class="easyui-menu" style="width: 150px;">
-		<div id="mm-tabclose">关闭</div>
-		<div id="mm-tabcloseall">全部关闭</div>
-		<div id="mm-tabcloseother">除此之外全部关闭</div>
-		<div class="menu-sep"></div>
-		<div id="mm-tabcloseright">当前页右侧全部关闭</div>
-		<div id="mm-tabcloseleft">当前页左侧全部关闭</div>
-		<div class="menu-sep"></div>
-		<div id="mm-exit">退出</div>
+	<div id="mm" 
+		style="width: 150px;">
+		<div id="add" data-options="iconCls:'icon-save',name:'add'">新增</div>
+		<div id="copy" data-options="iconCls:'icon-remove',name:'copy'">复制</div>
 	</div>
 
 	<!-- 修改密码 -->
