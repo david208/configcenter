@@ -9,20 +9,31 @@ import java.util.List;
  */
 public class MenuVo2 {
 
-	//private long id;
+	// private long id;
 	private String text;
 	private String state = "closed";
-	private Attributes attributes ;
-	
+	private Attributes attributes;
+
 	@SuppressWarnings("unused")
-	private class Attributes{
-		
-		public Attributes(String url) {
-			this.url= url;
+	private class Attributes {
+
+		public Attributes(String url, String type) {
+			this.url = url;
+			this.type = type;
 		}
+
 		private String url;
 
-	
+		private String type;
+
+		public String getType() {
+			return type;
+		}
+
+		public void setType(String type) {
+			this.type = type;
+		}
+
 		public String getUrl() {
 			return url;
 		}
@@ -30,31 +41,32 @@ public class MenuVo2 {
 		public void setUrl(String url) {
 			this.url = url;
 		}
-		
+
 	}
+
 	private List<MenuVo2> children = new LinkedList<MenuVo2>();
 
 	public MenuVo2() {
 	}
-	
-	public MenuVo2(String text ) {
+
+	public MenuVo2(String text, String type) {
 		this.text = text;
+		this.attributes = new Attributes(null, type);
 	}
 
-	public MenuVo2(String text ,String url) {
-		this.state="open";
+	public MenuVo2(String text, String url, String type) {
+		this.state = "open";
 		this.text = text;
-		this.attributes = new Attributes(url);
+		this.attributes = new Attributes(url, type);
 	}
 
-	
-	public static MenuVo2 createTreeNode(String text){
-		return new MenuVo2(text);
+	public static MenuVo2 createTreeNode(String text, String type) {
+		return new MenuVo2(text, type);
 	}
-	
-    public static MenuVo2 createLeafNode(String text ,String url){
-    	return new MenuVo2(text, url);
-    }
+
+	public static MenuVo2 createLeafNode(String text, String url, String type) {
+		return new MenuVo2(text, url, type);
+	}
 
 	public String getText() {
 		return text;
@@ -88,12 +100,4 @@ public class MenuVo2 {
 		this.children = children;
 	}
 
-	
-	}
-
-	
-
-	
-	
-	
-
+}
