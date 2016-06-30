@@ -8,59 +8,84 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <title>Hestia Fortune System</title>
 
-<link href="${ctx}/static/jquery-validation/1.11.1/validate.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/static/css/index.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/static/jquery-easyui-1.3.5/themes/default/easyui.css" type="text/css" rel="stylesheet" />
-<link href="${ctx}/static/jquery-easyui-1.3.5/themes/icon.css" type="text/css" rel="stylesheet" />
+<link href="${ctx}/static/jquery-validation/1.11.1/validate.css"
+	type="text/css" rel="stylesheet" />
+<link href="${ctx}/static/css/index.css" type="text/css"
+	rel="stylesheet" />
+<link href="${ctx}/static/jquery-easyui-1.3.5/themes/default/easyui.css"
+	type="text/css" rel="stylesheet" />
+<link href="${ctx}/static/jquery-easyui-1.3.5/themes/icon.css"
+	type="text/css" rel="stylesheet" />
 
 <script src="${ctx}/static/jquery/jquery.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/jquery-validation/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
-<script src="${ctx}/static/jquery-validation/1.11.1/messages_bs_zh.js" type="text/javascript"></script>
-<script src="${ctx}/static/jquery-easyui-1.3.5/jquery.easyui.min.js" type="text/javascript"></script>
+<script
+	src="${ctx}/static/jquery-validation/1.11.1/jquery.validate.min.js"
+	type="text/javascript"></script>
+<script src="${ctx}/static/jquery-validation/1.11.1/messages_bs_zh.js"
+	type="text/javascript"></script>
+<script src="${ctx}/static/jquery-easyui-1.3.5/jquery.easyui.min.js"
+	type="text/javascript"></script>
+	<script src="${ctx}/static\jquery-easyui-1.3.5\extension\common.js"
+	type="text/javascript"></script>
 <script src="${ctx}/static/js/index.js" type="text/javascript"></script>
 <script>
-$(function(){
-	$.ajax({
-		url : '${ctx}/menu',
-		dataType : 'json',
-		success : function(data) {
-			InitLeftMenu( data.attachment);
-		}
-	});
-})
-
-//初始化左侧
-function InitLeftMenu( _menus ) {
-
-    $(".easyui-accordion1").empty();
-    var menulist = "";
-   
-    $.each(_menus, function(i, menu) {
-        menulist += '<div title="'+menu.name+'"  style="overflow:auto;">';
-		menulist += '<ul>';
+	$(function() {
+		InitLeftMenu();
+	})
 	
-        $.each(menu.children, function(j, m) {
-			menulist += '<li><div><a target="mainFrame" href="${ctx}' + m.url + '" >' + m.name + '</a></div></li> ';
-        });
-        menulist += '</ul></div>';
-    });
 
-	$(".easyui-accordion1").append(menulist);
-	
-	$('.easyui-accordion1 li a').click(function(){
-		var tabTitle = $(this).text();
-		var url = $(this).attr("href");
-		addTab(tabTitle,url);
-		$('.easyui-accordion1 li div').removeClass("selected");
-		$(this).parent().addClass("selected");
-	}).hover(function(){
-		$(this).parent().addClass("hover");
-	},function(){
-		$(this).parent().removeClass("hover");
-	});
+	//初始化左侧
+	function InitLeftMenu() {
 
-	$(".easyui-accordion1").accordion();
-}
+		$('#menu').tree({
+			url : '${ctx}/menu2',
+				onClick: function(node){
+					if(null != node.attributes.url)
+						{
+						createTabsIframe('tabs',node.text,"${ctx}"+ node.attributes.url);
+						} // 在用户点击的时候提示
+				}
+
+		});
+
+		/*   $(".easyui-accordion1").empty();
+		  var menulist = "";
+		 
+		  $.each(_menus, function(i, menu) {
+		      menulist += '<div title="'+menu.name+'"  style="overflow:auto;">';
+			menulist += '<ul>';
+		
+			
+			$.each(menu.children, function(j, m2) {
+				 menulist += '<li><div title="'+m2.name+'">'+menu.name;
+					menulist += '<ul>';
+					  menulist += '</ul></div></li>';
+					
+					
+		      $.each(m2.children, function(k, m3) {
+				menulist += '<li><div><a target="mainFrame" href="${ctx}' + m3.url + '" >' + m3.name + '</a></div></li> ';
+		      }); 
+		      
+			 });
+		      menulist += '</ul></div>';
+		  });
+
+		$(".easyui-accordion1").append(menulist);
+		
+		$('.easyui-accordion1 li a').click(function(){
+			var tabTitle = $(this).text();
+			var url = $(this).attr("href");
+			addTab(tabTitle,url);
+			$('.easyui-accordion1 li div').removeClass("selected");
+			$(this).parent().addClass("selected");
+		}).hover(function(){
+			$(this).parent().addClass("hover");
+		},function(){
+			$(this).parent().removeClass("hover");
+		});
+
+		$(".easyui-accordion1").accordion(); */
+	}
 </script>
 </head>
 
@@ -68,16 +93,14 @@ function InitLeftMenu( _menus ) {
 	<div region="north" split="true" border="false"
 		style="overflow: hidden; height: 65px; background: url(./static/images/logo1.jpg) #7f99be; background-repeat: no-repeat; line-height: 20px; color: #fff; font-family: Verdana, 微软雅黑, 黑体">
 		<span style="float: right; padding-right: 20px;" class="head">欢迎
-			${userName}
-			<a href="/sms/logout">安全退出</a>
+			${userName} <a href="/sms/logout">安全退出</a>
 		</span>
 		<div>
-			<div style="width:80px;height:80px; float: left;" onclick="window.location.reload();">
-			</div>
+			<div style="width: 80px; height: 80px; float: left;"
+				onclick="window.location.reload();"></div>
 			<div style="padding-left: 90px; padding-top: 25px">
 				<!-- Damocles Sysetem V1.0 -->
-				<b><font style="font-size: 20px">意真金融短信平台 </font></b>
-				V1.0.0
+				<b><font style="font-size: 20px">意真金融短信平台 </font></b> V1.0.0
 			</div>
 		</div>
 	</div>
@@ -88,8 +111,8 @@ function InitLeftMenu( _menus ) {
 
 	<div region="west" split="true" title="导航菜单" style="width: 180px;"
 		id="west">
-		<div class="easyui-accordion1" fit="true" border="false">
-			<!--  导航内容 -->
+		<div fit="true" border="false">
+			<ul id="menu" class="easyui-tree""></ul>
 		</div>
 	</div>
 
