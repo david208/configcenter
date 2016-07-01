@@ -109,7 +109,8 @@ public class PropertiesServerService implements PropertiesServerInter {
 
 		addSystem(system, curatorTransactionFinal);
 
-		curatorTransactionFinal.create().forPath(Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version);
+		curatorTransactionFinal.create()
+				.forPath(Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version);
 
 		if (isAlone) {
 			curatorTransactionFinal.commit();
@@ -120,7 +121,8 @@ public class PropertiesServerService implements PropertiesServerInter {
 	public List<ACL> addEnv(String system, String version, String env, String memo,
 			CuratorTransactionFinal parentTransactionFinal) throws Exception {
 
-		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version + Constants.PATH_SPLIT + env;
+		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
+				+ Constants.PATH_SPLIT + env;
 
 		boolean isAlone = (null == parentTransactionFinal);
 		if (!isAlone) {
@@ -161,7 +163,8 @@ public class PropertiesServerService implements PropertiesServerInter {
 	@Override
 	public void addProperties(String system, String version, String env, Map<String, PropertyInfo> properties,
 			CuratorTransactionFinal parentTransactionFinal) throws Exception {
-		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version + Constants.PATH_SPLIT + env;
+		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
+				+ Constants.PATH_SPLIT + env;
 
 		boolean isAlone = (null == parentTransactionFinal);
 		CuratorTransactionFinal curatorTransactionFinal = prepare(isAlone, parentTransactionFinal, path);
@@ -174,12 +177,25 @@ public class PropertiesServerService implements PropertiesServerInter {
 		}
 
 		for (String key : properties.keySet()) {
+			byte[] propertyInfoByte = Object2ByteArrayUtils.ObjectToByte(properties.get(key));
 			if (children.contains(key)) {
-				curatorTransactionFinal.setData().forPath(path + Constants.PATH_SPLIT + key,
-						Object2ByteArrayUtils.ObjectToByte(properties.get(key)));
+				curatorTransactionFinal.setData().forPath(path + Constants.PATH_SPLIT + key, propertyInfoByte);
 			} else {
 				curatorTransactionFinal.create().withACL(aclList).forPath(path + Constants.PATH_SPLIT + key,
-						Object2ByteArrayUtils.ObjectToByte(properties.get(key)));
+						propertyInfoByte);
+
+				if (isAlone) {
+					String versionPath = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT
+							+ version;
+					List<String> envList = client.getChildren().forPath(versionPath);
+					for (String envNode : envList) {
+						String evnPath = versionPath + Constants.PATH_SPLIT + envNode;
+						String keyPath = evnPath + Constants.PATH_SPLIT + key;
+						if (!keyPath.equals(path + Constants.PATH_SPLIT + key))
+							curatorTransactionFinal.create().withACL(client.getACL().forPath(evnPath)).forPath(keyPath,
+									propertyInfoByte);
+					}
+				}
 			}
 		}
 
@@ -201,22 +217,26 @@ public class PropertiesServerService implements PropertiesServerInter {
 
 	@Override
 	public List<String> getEnvList(String system, String version) throws Exception {
-		return client.getChildren().forPath(Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version);
+		return client.getChildren()
+				.forPath(Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version);
 	}
 
 	@Override
 	public EnvInfo getProperties(String system, String version, String env) throws Exception {
 
-		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version + Constants.PATH_SPLIT + env;
+		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
+				+ Constants.PATH_SPLIT + env;
 		List<String> keys = client.getChildren().forPath(path);
 		Map<String, PropertyInfo> properties = new HashMap<String, PropertyInfo>();
 		for (String key : keys) {
-			PropertyInfo propertyInfo = Object2ByteArrayUtils.ByteToObject(client.getData().forPath(path + Constants.PATH_SPLIT + key));
+			PropertyInfo propertyInfo = Object2ByteArrayUtils
+					.ByteToObject(client.getData().forPath(path + Constants.PATH_SPLIT + key));
 			properties.put(key, propertyInfo);
 		}
 		EnvInfo envInfo = Object2ByteArrayUtils.ByteToObject(client.getData().forPath(path));
 		envInfo.setProperties(properties);
-		envInfo.setLongToken(Base64.encodeBase64URLSafeString(zkUrl.getBytes("utf-8")) + Constants.TOKEN_SPLIT + envInfo.getToken());
+		envInfo.setLongToken(
+				Base64.encodeBase64URLSafeString(zkUrl.getBytes("utf-8")) + Constants.TOKEN_SPLIT + envInfo.getToken());
 		return envInfo;
 	}
 
@@ -234,7 +254,8 @@ public class PropertiesServerService implements PropertiesServerInter {
 
 	@Override
 	public void deleteEnv(String system, String version, String env) throws Exception {
-		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version + Constants.PATH_SPLIT + env;
+		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
+				+ Constants.PATH_SPLIT + env;
 		List<String> keys = client.getChildren().forPath(path);
 		CuratorTransaction transaction = client.inTransaction();
 		CuratorTransactionFinal curatorTransactionFinal = transaction.check().forPath(path).and();
@@ -247,14 +268,24 @@ public class PropertiesServerService implements PropertiesServerInter {
 
 	@Override
 	public void deleteProperty(String system, String version, String env, String key) throws Exception {
-		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version + Constants.PATH_SPLIT + env + Constants.PATH_SPLIT + key;
-		client.delete().forPath(path);
+		String versionPath = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version;
+		String path = versionPath + Constants.PATH_SPLIT + env + Constants.PATH_SPLIT + key;
+		List<String> envList = client.getChildren().forPath(versionPath);
 
+		CuratorTransaction transaction = client.inTransaction();
+		CuratorTransactionFinal curatorTransactionFinal = transaction.check().forPath(path).and();
+
+		for (String envNode : envList) {
+			String keyPath = versionPath + Constants.PATH_SPLIT + envNode + Constants.PATH_SPLIT + key;
+			curatorTransactionFinal.delete().forPath(keyPath);
+		}
+		curatorTransactionFinal.commit();
 	}
 
 	@Override
 	public void editEnv(String system, String version, String env, String memo) throws Exception {
-		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version + Constants.PATH_SPLIT + env;
+		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
+				+ Constants.PATH_SPLIT + env;
 		EnvInfo envInfo = Object2ByteArrayUtils.ByteToObject(client.getData().forPath(path));
 		envInfo.setMemo(memo);
 		client.setData().forPath(path, Object2ByteArrayUtils.ObjectToByte(envInfo));
@@ -264,7 +295,8 @@ public class PropertiesServerService implements PropertiesServerInter {
 	@Override
 	public void editProperty(String system, String version, String env, String key, PropertyInfo propertyInfo)
 			throws Exception {
-		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version + Constants.PATH_SPLIT + env + Constants.PATH_SPLIT + key;
+		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
+				+ Constants.PATH_SPLIT + env + Constants.PATH_SPLIT + key;
 		client.setData().forPath(path, Object2ByteArrayUtils.ObjectToByte(propertyInfo));
 
 	}
@@ -291,7 +323,10 @@ public class PropertiesServerService implements PropertiesServerInter {
 	@Override
 	public void copyEnv(String system, String version, String env, String newEnv) throws Exception {
 		EnvInfo envInfo = getProperties(system, version, env);
-		addProperties(system, version, newEnv, envInfo.getProperties(), null);
+		CuratorTransaction transaction = client.inTransaction();
+		CuratorTransactionFinal curatorTransactionFinal = transaction.check().forPath(Constants.PROPERTY_PATH).and();
+		addProperties(system, version, newEnv, envInfo.getProperties(), curatorTransactionFinal);
+		curatorTransactionFinal.commit();
 	}
 
 }

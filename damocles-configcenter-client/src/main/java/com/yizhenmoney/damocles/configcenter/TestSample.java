@@ -21,9 +21,11 @@ public class TestSample {
 	public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException, Exception {
 		PropertiesServerInter propertiesServerInter = new PropertiesServerService("admin:123456",
 				"192.168.220.194:2181");
-//		Map<String, String> proMap = new HashMap<>();
-//		Map<String, PropertyInfo> map = new TreeMap<>();
-//
+		Map<String, String> proMap = new HashMap<>();
+		Map<String, PropertyInfo> map = new TreeMap<>();
+		PropertyInfo info = new PropertyInfo();
+	info.setValue("dddd");
+	map.put("add.pp", info);
 //		Properties properties = PropertiesLoaderUtils.loadAllProperties("application.properties");
 //		for (Object key : properties.keySet()) {
 //			PropertyInfo info = new PropertyInfo();
@@ -32,8 +34,9 @@ public class TestSample {
 //		}
 //
 //		propertiesServerInter.addProperties("crm", "2.2", "dev1", map, null);
-		// propertiesServerInter.copyEnv("uc", "1.0", "dev","newDev");;
-		System.out.println(propertiesServerInter.getProperties("crm", "2.2", "dev1"));
+		//propertiesServerInter.copyEnv("crm", "2.2", "dev1","newDev");;
+		propertiesServerInter.deleteProperty("crm", "2.2", "newDev", "add.pp");
+		System.out.println(propertiesServerInter.getProperties("crm", "2.2", "newDev"));
 		// propertiesServerInter.copyVersion("uc", "1.0","1.5");
 		// propertiesServerInter.addEnv("c2", "1.4", "dt19",null,null);
 		// Map<String, String> properties = new TreeMap<>();
