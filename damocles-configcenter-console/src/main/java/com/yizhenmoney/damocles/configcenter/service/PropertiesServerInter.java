@@ -1,4 +1,4 @@
-package com.yizhenmoney.damocles.configcenter.service.server;
+package com.yizhenmoney.damocles.configcenter.service;
 
 import java.util.List;
 import java.util.Map;

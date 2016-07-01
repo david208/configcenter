@@ -1,4 +1,4 @@
-package com.yizhenmoney.damocles.configcenter.service.server;
+package com.yizhenmoney.damocles.configcenter.service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -187,13 +187,15 @@ public class PropertiesServerService implements PropertiesServerInter {
 				if (isAlone) {
 					String versionPath = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT
 							+ version;
-					List<String> envList = client.getChildren().forPath(versionPath);
-					for (String envNode : envList) {
-						String evnPath = versionPath + Constants.PATH_SPLIT + envNode;
-						String keyPath = evnPath + Constants.PATH_SPLIT + key;
-						if (!keyPath.equals(path + Constants.PATH_SPLIT + key))
-							curatorTransactionFinal.create().withACL(client.getACL().forPath(evnPath)).forPath(keyPath,
-									propertyInfoByte);
+					if (null != client.checkExists().forPath(versionPath)) {
+						List<String> envList = client.getChildren().forPath(versionPath);
+						for (String envNode : envList) {
+							String evnPath = versionPath + Constants.PATH_SPLIT + envNode;
+							String keyPath = evnPath + Constants.PATH_SPLIT + key;
+							if (!keyPath.equals(path + Constants.PATH_SPLIT + key))
+								curatorTransactionFinal.create().withACL(client.getACL().forPath(evnPath))
+										.forPath(keyPath, propertyInfoByte);
+						}
 					}
 				}
 			}

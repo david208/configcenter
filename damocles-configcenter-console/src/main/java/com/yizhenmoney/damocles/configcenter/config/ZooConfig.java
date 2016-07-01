@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.yizhenmoney.damocles.configcenter.service.server.PropertiesServerInter;
-import com.yizhenmoney.damocles.configcenter.service.server.PropertiesServerService;
+import com.yizhenmoney.damocles.configcenter.service.PropertiesServerInter;
+import com.yizhenmoney.damocles.configcenter.service.PropertiesServerService;
 
 @Configuration
 public class ZooConfig {

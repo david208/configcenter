@@ -7,14 +7,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import com.yizhenmoney.damocles.configcenter.service.client.ZooKeeperPropertiesService;
-import com.yizhenmoney.damocles.configcenter.service.server.PropertiesServerInter;
-import com.yizhenmoney.damocles.configcenter.service.server.PropertiesServerService;
+import com.yizhenmoney.damocles.configcenter.service.PropertiesServerInter;
+import com.yizhenmoney.damocles.configcenter.service.PropertiesServerService;
 import com.yizhenmoney.damocles.configcenter.vo.PropertyInfo;
-import com.yizhenmoney.damocles.configcenter.vo.Token;
 
 public class TestSample {
 
@@ -23,20 +20,20 @@ public class TestSample {
 				"192.168.220.194:2181");
 		Map<String, String> proMap = new HashMap<>();
 		Map<String, PropertyInfo> map = new TreeMap<>();
-		PropertyInfo info = new PropertyInfo();
+/*		PropertyInfo info = new PropertyInfo();
 	info.setValue("dddd");
-	map.put("add.pp", info);
-//		Properties properties = PropertiesLoaderUtils.loadAllProperties("application.properties");
-//		for (Object key : properties.keySet()) {
-//			PropertyInfo info = new PropertyInfo();
-//			info.setValue((String) properties.get(key));
-//			map.put((String) key, info);
-//		}
+	map.put("add.pp", info);*/
+		Properties properties = PropertiesLoaderUtils.loadAllProperties("application2.properties");
+		for (Object key : properties.keySet()) {
+			PropertyInfo info = new PropertyInfo();
+			info.setValue((String) properties.get(key));
+			map.put((String) key, info);
+		}
 //
-//		propertiesServerInter.addProperties("crm", "2.2", "dev1", map, null);
+	propertiesServerInter.addProperties("crm", "2.2.5", "dev1", map, null);
 		//propertiesServerInter.copyEnv("crm", "2.2", "dev1","newDev");;
-		propertiesServerInter.deleteProperty("crm", "2.2", "newDev", "add.pp");
-		System.out.println(propertiesServerInter.getProperties("crm", "2.2", "newDev"));
+		//propertiesServerInter.deleteProperty("crm", "2.2", "newDev", "add.pp");
+		//System.out.println(propertiesServerInter.getProperties("crm", "2.2", "newDev"));
 		// propertiesServerInter.copyVersion("uc", "1.0","1.5");
 		// propertiesServerInter.addEnv("c2", "1.4", "dt19",null,null);
 		// Map<String, String> properties = new TreeMap<>();

@@ -5,10 +5,10 @@ import java.util.Properties;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.ExponentialBackoffRetry;
 
+import com.netflix.curator.framework.CuratorFramework;
+import com.netflix.curator.framework.CuratorFrameworkFactory;
+import com.netflix.curator.retry.ExponentialBackoffRetry;
 import com.yizhenmoney.damocles.configcenter.config.Constants;
 import com.yizhenmoney.damocles.configcenter.utils.DESCoder;
 import com.yizhenmoney.damocles.configcenter.utils.Object2ByteArrayUtils;
@@ -45,7 +45,7 @@ public class ZooKeeperPropertiesService implements PropertiesClientInter {
 		List<String> keys = propertyClient.getChildren().forPath(token.getPath());
 		for (String key : keys) {
 			PropertyInfo info = Object2ByteArrayUtils.ByteToObject(propertyClient.getData().forPath(token.getPath() + Constants.PATH_SPLIT + key));
-			props.setProperty(key, info.getValue());
+			props.setProperty(key, info.getValue().trim());
 		}
 		propertyClient.close();
 	}
