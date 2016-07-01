@@ -235,12 +235,15 @@ LI {
 	LINE-HEIGHT: 16px;
 	MARGIN: 0px auto;
 	PADDING-LEFT: 0px;
-	WIDTH: 529px;
+	width: 100%;
 	PADDING-RIGHT: 0px;
-	BACKGROUND: url(static/img/back-login-footer.jpg) no-repeat;
+	BACKGROUND: url(static/images/back-login-footer.jpg) no-repeat;
 	HEIGHT: 110px;
 	COLOR: #002d8f;
-	PADDING-TOP: 8px
+	PADDING-TOP: 8px;
+	bottom:0px;
+	position: absolute;
+	background-size:cover;
 }
 
 .denglu {
@@ -267,11 +270,11 @@ LI {
 	<form action="${ctx}/login" method="post">
 		<DIV id=back_login_container>
 			<DIV id=back_login_head>
-				<IMG src="static/styles/loginImg/back-login-top.jpg">
+				<IMG src="${ctx}/static/styles/loginImg/back-login-top.jpg">
 			</DIV>
 			<DIV class=tol>
 				<DIV id=back_login_left>
-					<IMG src="static/styles/loginImg/back-login-left.jpg">
+					<IMG src="${ctx}/static/styles/loginImg/back-login-left.jpg">
 				</DIV>
 				<DIV id=back_login_right>
 					<UL>
@@ -282,22 +285,23 @@ LI {
 					</UL>
 					<H2>
 						<INPUT class=denglu
-							src="static/styles/loginImg/back-login-btn.jpg" type=image>&nbsp;
+							src="${ctx}/static/styles/loginImg/back-login-btn.jpg" type=image>&nbsp;
 					</H2>
 					<H3></H3>
 				</DIV>
 			</DIV>
+		
 		</DIV>
-		<div id="chartDiv" align="center">
+	<!-- 	<div id="chartDiv" align="center">
 			<script type="text/javascript">
 				var myChart1 = new FusionCharts(
-						"${ctx}/static/funsionChart/swf/Column2D.swf",
+						"${ctx}/static/Column2D.swf",
 						"myChartId", "600", "350");
 				myChart1
 						.setDataXML("<graph baseFont='SunSim' baseFontSize='12' caption='分析' subcaption='' yAxisMinValue='51650.1' yAxisMaxValue='71118.3' xaxisname='日期' yaxisname='数量' hovercapbg='FFECAA' hovercapborder='F47E00' formatNumberScale='0' decimalPrecision='0' showvalues='1' numdivlines='10' numVdivlines='0' shownames='1' rotateNames='1'><set name='2009-10-04' value='57653' color='AFD8F8'/><set name='2009-10-05' value='57389' color='F6BD0F'/><set name='2009-10-06' value='59256' color='8BBA00'/><set name='2009-10-07' value='62762' color='FF8E46'/><set name='2009-10-08' value='63287' color='008E8E'/><set name='2009-10-09' value='60109' color='D64646'/><set name='2009-10-10' value='64653' color='8E468E'/><set name='2009-10-11' value='61687' color='588526'/></graph>");
 				myChart1.render("chartDiv");
 			</script>
-		</div>
+		</div> -->
 		<DIV id=back_login_footer>版权@意真（上海）金融信息服务有限公司</DIV>
 	</FORM>
 </BODY>

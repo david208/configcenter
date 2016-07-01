@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -108,7 +108,7 @@
 	<div region="north" split="true" border="false"
 		style="overflow: hidden; height: 65px; background: url(${ctx}/static/images/logo1.jpg) #7f99be; background-repeat: no-repeat; line-height: 20px; color: #fff; font-family: Verdana, 微软雅黑, 黑体">
 		<span style="float: right; padding-right: 20px;" class="head">欢迎
-			${userName} <a href="/sms/logout">安全退出</a>
+			<sec:authentication property="principal.username" /> <a href="${ctx}/logout">安全退出</a>
 		</span>
 		<div>
 			<div style="width: 80px; height: 80px; float: left;"

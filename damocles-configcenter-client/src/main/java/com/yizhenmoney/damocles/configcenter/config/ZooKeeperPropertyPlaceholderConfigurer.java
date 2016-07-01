@@ -11,9 +11,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import com.yizhenmoney.damocles.configcenter.service.client.ZooKeeperPropertiesService;
 import com.yizhenmoney.damocles.configcenter.vo.Token;
 
-
 public class ZooKeeperPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
-
 
 	@Override
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props)
@@ -26,15 +24,14 @@ public class ZooKeeperPropertyPlaceholderConfigurer extends PropertyPlaceholderC
 		super.processProperties(beanFactoryToProcess, props);
 	}
 
-	@Autowired
-	ZooKeeperPropertiesService zooKeeperPropertiesService;
+	ZooKeeperPropertiesService zooKeeperPropertiesService = new ZooKeeperPropertiesService();
 
 	private void getDatas(Properties props) throws Exception {
 		String acl = System.getProperty("acl");
 		if (StringUtils.isEmpty(acl))
 			throw new RuntimeException("acl不存在");
 
-		Token token= zooKeeperPropertiesService.getToken(acl);
-		zooKeeperPropertiesService.getProperties(token,props);
+		Token token = zooKeeperPropertiesService.getToken(acl);
+		zooKeeperPropertiesService.getProperties(token, props);
 	}
 }

@@ -12,6 +12,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import com.yizhenmoney.damocles.configcenter.config.Constants;
 import com.yizhenmoney.damocles.configcenter.utils.DESCoder;
 import com.yizhenmoney.damocles.configcenter.utils.Object2ByteArrayUtils;
+import com.yizhenmoney.damocles.configcenter.vo.PropertyInfo;
 import com.yizhenmoney.damocles.configcenter.vo.Token;
 
 public class ZooKeeperPropertiesService implements PropertiesClientInter {
@@ -43,8 +44,8 @@ public class ZooKeeperPropertiesService implements PropertiesClientInter {
 		propertyClient.start();
 		List<String> keys = propertyClient.getChildren().forPath(token.getPath());
 		for (String key : keys) {
-			String value = new String(propertyClient.getData().forPath(token.getPath() + Constants.PATH_SPLIT + key));
-			props.setProperty(key, value);
+			PropertyInfo info = Object2ByteArrayUtils.ByteToObject(propertyClient.getData().forPath(token.getPath() + Constants.PATH_SPLIT + key));
+			props.setProperty(key, info.getValue());
 		}
 		propertyClient.close();
 	}
