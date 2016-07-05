@@ -18,19 +18,19 @@ public class TestSample {
 	public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException, Exception {
 		PropertiesServerInter propertiesServerInter = new PropertiesServerService("admin:123456",
 				"192.168.220.194:2181");
-		Map<String, String> proMap = new HashMap<>();
-		Map<String, PropertyInfo> map = new TreeMap<>();
-/*		PropertyInfo info = new PropertyInfo();
-	info.setValue("dddd");
-	map.put("add.pp", info);*/
-		Properties properties = PropertiesLoaderUtils.loadAllProperties("application-tpp.properties");
-		for (Object key : properties.keySet()) {
-			PropertyInfo info = new PropertyInfo();
-			info.setValue((String) properties.get(key));
-			map.put((String) key, info);
-		}
+//		Map<String, String> proMap = new HashMap<>();
+//		Map<String, PropertyInfo> map = new TreeMap<>();
 //
-	propertiesServerInter.addProperties("tpp", "1.0.0", "dev1", map, null);
+//		Properties properties = PropertiesLoaderUtils.loadAllProperties("application-tpp.properties");
+//		for (Object key : properties.keySet()) {
+//			PropertyInfo info = new PropertyInfo();
+//			info.setValue((String) properties.get(key));
+//			map.put((String) key, info);
+//		}
+		//propertiesServerInter.deleteEnv("crm", "1.0", "dev");
+		propertiesServerInter.deleteSystem("c");
+
+	//propertiesServerInter.addProperties("tpp", "1.0.0", "dev1", map, null);
 		//propertiesServerInter.copyEnv("crm", "2.2", "dev1","newDev");;
 		//propertiesServerInter.deleteProperty("crm", "2.2", "newDev", "add.pp");
 		//System.out.println(propertiesServerInter.getProperties("crm", "2.2", "newDev"));

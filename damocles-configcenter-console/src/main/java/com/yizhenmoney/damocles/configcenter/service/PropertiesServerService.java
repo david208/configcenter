@@ -1,7 +1,5 @@
 package com.yizhenmoney.damocles.configcenter.service;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -249,13 +247,12 @@ public class PropertiesServerService implements PropertiesServerInter {
 
 	@Override
 	public void deleteSystem(String system) throws Exception {
-		// TODO Auto-generated method stub
-
+		client.delete().deletingChildrenIfNeeded().forPath(Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system);
 	}
 
 	@Override
 	public void deleteVersion(String system, String version) throws Exception {
-		// TODO Auto-generated method stub
+		client.delete().deletingChildrenIfNeeded().forPath(Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system+ Constants.PATH_SPLIT+version);
 
 	}
 
@@ -263,13 +260,8 @@ public class PropertiesServerService implements PropertiesServerInter {
 	public void deleteEnv(String system, String version, String env) throws Exception {
 		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
 				+ Constants.PATH_SPLIT + env;
-		List<String> keys = client.getChildren().forPath(path);
-		CuratorTransaction transaction = client.inTransaction();
-		CuratorTransactionFinal curatorTransactionFinal = transaction.check().forPath(path).and();
-		for (String key : keys) {
-			curatorTransactionFinal.delete().forPath(path + Constants.PATH_SPLIT + key);
-		}
-		curatorTransactionFinal.delete().forPath(path).and().commit();
+		
+		client.delete().deletingChildrenIfNeeded().forPath(path);
 
 	}
 
