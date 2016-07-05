@@ -17,10 +17,13 @@ public class MenuVo2 {
 	@SuppressWarnings("unused")
 	private class Attributes {
 
-		public Attributes(String url, String type) {
+		public Attributes(String url, String type, String allPath) {
 			this.url = url;
 			this.type = type;
+			this.allPath = allPath;
 		}
+
+		private String allPath;
 
 		private String url;
 
@@ -42,6 +45,14 @@ public class MenuVo2 {
 			this.url = url;
 		}
 
+		public String getAllPath() {
+			return allPath;
+		}
+
+		public void setAllPath(String allPath) {
+			this.allPath = allPath;
+		}
+
 	}
 
 	private List<MenuVo2> children = new LinkedList<MenuVo2>();
@@ -49,23 +60,23 @@ public class MenuVo2 {
 	public MenuVo2() {
 	}
 
-	public MenuVo2(String text, String type) {
+	public MenuVo2(String text, String type, String allPath) {
 		this.text = text;
-		this.attributes = new Attributes(null, type);
+		this.attributes = new Attributes(null, type, allPath + "." + text);
 	}
 
-	public MenuVo2(String text, String url, String type) {
+	public MenuVo2(String text, String url, String type, String allPath) {
 		this.state = "open";
 		this.text = text;
-		this.attributes = new Attributes(url, type);
+		this.attributes = new Attributes(url, type, allPath + "." + text);
 	}
 
-	public static MenuVo2 createTreeNode(String text, String type) {
-		return new MenuVo2(text, type);
+	public static MenuVo2 createTreeNode(String text, String type, String allPath) {
+		return new MenuVo2(text, type, allPath);
 	}
 
-	public static MenuVo2 createLeafNode(String text, String url, String type) {
-		return new MenuVo2(text, url, type);
+	public static MenuVo2 createLeafNode(String text, String url, String type, String allPath) {
+		return new MenuVo2(text, url, type, allPath);
 	}
 
 	public String getText() {
