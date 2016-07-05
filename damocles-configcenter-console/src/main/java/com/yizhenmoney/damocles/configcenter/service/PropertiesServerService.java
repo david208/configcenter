@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +22,9 @@ import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Id;
 import org.apache.zookeeper.server.auth.DigestAuthenticationProvider;
 
+import com.google.gson.Gson;
 import com.yizhenmoney.damocles.configcenter.config.Constants;
 import com.yizhenmoney.damocles.configcenter.utils.DESCoder;
-import com.yizhenmoney.damocles.configcenter.utils.Object2ByteArrayUtils;
 import com.yizhenmoney.damocles.configcenter.vo.EnvInfo;
 import com.yizhenmoney.damocles.configcenter.vo.PropertyInfo;
 import com.yizhenmoney.damocles.configcenter.vo.Token;
@@ -34,13 +35,14 @@ public class PropertiesServerService implements PropertiesServerInter {
 
 	private String zkUrl;
 
+	private Gson gson = new Gson();
+
 	private final ACL readAcl = new ACL(Perms.READ,
 			new Id(Constants.DIGEST, DigestAuthenticationProvider.generateDigest(Constants.READ_AUTH)));;
 
 	private CuratorFramework client;
 
-	public PropertiesServerService(String adminAuth, String zkUrl)
-			throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	public PropertiesServerService(String adminAuth, String zkUrl) throws Exception {
 		this.zkUrl = zkUrl;
 		adminAcl = new ACL(Perms.ALL, new Id(Constants.DIGEST, DigestAuthenticationProvider.generateDigest(adminAuth)));
 		client = CuratorFrameworkFactory.builder().connectString(this.zkUrl).sessionTimeoutMs(5000)
@@ -60,6 +62,10 @@ public class PropertiesServerService implements PropertiesServerInter {
 				.retryPolicy(new ExponentialBackoffRetry(3, 10000)).namespace(Constants.CONFIG_CENTER_NAMESPACE)
 				.build();
 		client.start();
+		if (client.checkExists().forPath(Constants.PROPERTY_PATH) == null)
+			client.create().creatingParentsIfNeeded().forPath(Constants.PROPERTY_PATH);
+		if (client.checkExists().forPath(Constants.ORIGIN_PATH) == null)
+			client.create().creatingParentsIfNeeded().forPath(Constants.ORIGIN_PATH);
 	}
 
 	@Override
@@ -149,9 +155,10 @@ public class PropertiesServerService implements PropertiesServerInter {
 
 		ACL acl = new ACL(Perms.READ, new Id(Constants.DIGEST, DigestAuthenticationProvider.generateDigest(digest)));
 		List<ACL> aclList = Arrays.asList(acl, adminAcl);
-		curatorTransactionFinal.create().withACL(aclList).forPath(path, Object2ByteArrayUtils.ObjectToByte(envInfo))
-				.and().create().withACL(Arrays.asList(readAcl, adminAcl)).forPath(Constants.ORIGIN_PATH + shortToken,
-						DESCoder.encrypt(Object2ByteArrayUtils.ObjectToByte(token), Constants.SECRET_KEY));
+		curatorTransactionFinal.create().withACL(aclList).forPath(path, gson.toJson(envInfo).getBytes("utf-8")).and()
+				.create().withACL(Arrays.asList(readAcl, adminAcl))
+				.forPath(Constants.ORIGIN_PATH + Constants.PATH_SPLIT + shortToken,
+						DESCoder.encrypt(gson.toJson(token).getBytes("utf-8"), Constants.SECRET_KEY));
 
 		if (isAlone) {
 			curatorTransactionFinal.commit();
@@ -177,7 +184,7 @@ public class PropertiesServerService implements PropertiesServerInter {
 		}
 
 		for (String key : properties.keySet()) {
-			byte[] propertyInfoByte = Object2ByteArrayUtils.ObjectToByte(properties.get(key));
+			byte[] propertyInfoByte = gson.toJson(properties.get(key)).getBytes("utf-8");
 			if (children.contains(key)) {
 				curatorTransactionFinal.setData().forPath(path + Constants.PATH_SPLIT + key, propertyInfoByte);
 			} else {
@@ -231,14 +238,12 @@ public class PropertiesServerService implements PropertiesServerInter {
 		List<String> keys = client.getChildren().forPath(path);
 		Map<String, PropertyInfo> properties = new HashMap<String, PropertyInfo>();
 		for (String key : keys) {
-			PropertyInfo propertyInfo = Object2ByteArrayUtils
-					.ByteToObject(client.getData().forPath(path + Constants.PATH_SPLIT + key));
+			PropertyInfo propertyInfo = gson.fromJson(
+					new String(client.getData().forPath(path + Constants.PATH_SPLIT + key)), PropertyInfo.class);
 			properties.put(key, propertyInfo);
 		}
-		EnvInfo envInfo = Object2ByteArrayUtils.ByteToObject(client.getData().forPath(path));
+		EnvInfo envInfo = this.getEnv(system, version, env);
 		envInfo.setProperties(properties);
-		envInfo.setLongToken(
-				Base64.encodeBase64URLSafeString(zkUrl.getBytes("utf-8")) + Constants.TOKEN_SPLIT + envInfo.getToken());
 		return envInfo;
 	}
 
@@ -288,9 +293,9 @@ public class PropertiesServerService implements PropertiesServerInter {
 	public void editEnv(String system, String version, String env, String memo) throws Exception {
 		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
 				+ Constants.PATH_SPLIT + env;
-		EnvInfo envInfo = Object2ByteArrayUtils.ByteToObject(client.getData().forPath(path));
+		EnvInfo envInfo = gson.fromJson(new String(client.getData().forPath(path)), EnvInfo.class);
 		envInfo.setMemo(memo);
-		client.setData().forPath(path, Object2ByteArrayUtils.ObjectToByte(envInfo));
+		client.setData().forPath(path, gson.toJson(envInfo).getBytes("utf-8"));
 
 	}
 
@@ -299,7 +304,7 @@ public class PropertiesServerService implements PropertiesServerInter {
 			throws Exception {
 		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
 				+ Constants.PATH_SPLIT + env + Constants.PATH_SPLIT + key;
-		client.setData().forPath(path, Object2ByteArrayUtils.ObjectToByte(propertyInfo));
+		client.setData().forPath(path, gson.toJson(propertyInfo).getBytes("utf-8"));
 
 	}
 
@@ -329,6 +334,33 @@ public class PropertiesServerService implements PropertiesServerInter {
 		CuratorTransactionFinal curatorTransactionFinal = transaction.check().forPath(Constants.PROPERTY_PATH).and();
 		addProperties(system, version, newEnv, envInfo.getProperties(), curatorTransactionFinal);
 		curatorTransactionFinal.commit();
+	}
+
+	@Override
+	public EnvInfo getEnv(String system, String version, String env) throws Exception {
+
+		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
+				+ Constants.PATH_SPLIT + env;
+
+		EnvInfo envInfo = gson.fromJson(new String(client.getData().forPath(path)), EnvInfo.class);
+		envInfo.setLongToken(
+				Base64.encodeBase64URLSafeString(zkUrl.getBytes("utf-8")) + Constants.TOKEN_SPLIT + envInfo.getToken());
+		return envInfo;
+	}
+
+	@Override
+	public List<PropertyInfo> getPropertyInfos(String system, String version, String env) throws Exception {
+		String path = Constants.PROPERTY_PATH + Constants.PATH_SPLIT + system + Constants.PATH_SPLIT + version
+				+ Constants.PATH_SPLIT + env;
+		List<String> keys = client.getChildren().forPath(path);
+		List<PropertyInfo> properties = new LinkedList<PropertyInfo>();
+		for (String key : keys) {
+			PropertyInfo propertyInfo = gson.fromJson(
+					new String(client.getData().forPath(path + Constants.PATH_SPLIT + key)), PropertyInfo.class);
+			propertyInfo.setName(key);
+			properties.add(propertyInfo);
+		}
+		return properties;
 	}
 
 }

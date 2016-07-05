@@ -179,5 +179,11 @@ public interface PropertiesServerInter {
 	 * @throws Exception
 	 */
 	public void copyEnv(String system, String version, String env, String newEnv) throws Exception;
+	
+	
+	
+	public EnvInfo getEnv(String system, String version, String env) throws Exception;
+	
+	public List<PropertyInfo> getPropertyInfos(String system, String version, String env) throws Exception;
 
 }
