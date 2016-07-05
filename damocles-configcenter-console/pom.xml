@@ -308,8 +308,11 @@
 			<artifactId>greenmail</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<!-- compiler插件, 设定JDK版本 -->

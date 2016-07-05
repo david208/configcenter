@@ -23,14 +23,14 @@ public class TestSample {
 /*		PropertyInfo info = new PropertyInfo();
 	info.setValue("dddd");
 	map.put("add.pp", info);*/
-		Properties properties = PropertiesLoaderUtils.loadAllProperties("application2.properties");
+		Properties properties = PropertiesLoaderUtils.loadAllProperties("application-tpp.properties");
 		for (Object key : properties.keySet()) {
 			PropertyInfo info = new PropertyInfo();
 			info.setValue((String) properties.get(key));
 			map.put((String) key, info);
 		}
 //
-	propertiesServerInter.addProperties("crm", "2.2.5", "dev1", map, null);
+	propertiesServerInter.addProperties("tpp", "1.0.0", "dev1", map, null);
 		//propertiesServerInter.copyEnv("crm", "2.2", "dev1","newDev");;
 		//propertiesServerInter.deleteProperty("crm", "2.2", "newDev", "add.pp");
 		//System.out.println(propertiesServerInter.getProperties("crm", "2.2", "newDev"));

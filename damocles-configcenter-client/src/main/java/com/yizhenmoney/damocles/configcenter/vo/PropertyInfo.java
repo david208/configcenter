@@ -1,5 +1,6 @@
 package com.yizhenmoney.damocles.configcenter.vo;
 
+import java.beans.Transient;
 import java.io.Serializable;
 
 public class PropertyInfo implements Serializable {
@@ -8,6 +9,8 @@ public class PropertyInfo implements Serializable {
 	 * \
 	 */
 	private static final long serialVersionUID = 6420175833245289166L;
+	
+	private String name;
 
 	private String value;// 值
 
@@ -37,6 +40,15 @@ public class PropertyInfo implements Serializable {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	@Transient
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

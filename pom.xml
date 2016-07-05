@@ -500,6 +500,12 @@
 				<artifactId>log4jdbc</artifactId>
 				<version>${log4jdbc.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.3</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<!-- 插件配置 -->
