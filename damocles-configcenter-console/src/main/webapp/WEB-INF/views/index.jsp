@@ -37,6 +37,7 @@
 		if(item.name == 'add'){
 			if(node.attributes.type==1){
 				var system = node.text;
+				debugger;
 				$.post("${ctx}/addVersion?system="+system+"&version="+"1.324",function(data){
 					alert(data);
 				});
@@ -44,7 +45,10 @@
 			else if(node.attributes.type==2){
 			 var system =	$('#menu').tree("getParent",node.target).text;
 			 var version = node.text;
-
+				debugger;
+				$.post("${ctx}/addEnv?system="+system+"&version="+version+"&env="+"1.1",function(data){
+					alert(data);
+				});
 			}
 		}
 		else if (item.name == 'copy'){
@@ -60,7 +64,7 @@
 					url : '${ctx}/menu2',
 					onClick : function(node) {
 						if (3 == node.attributes.type) {
-							createTabsIframe('tabs', node.text, "${ctx}"
+							createTabsIframe('tabs', node.attributes.allPath, "${ctx}"
 									+ node.attributes.url);
 						} // 在用户点击的时候提示
 					},

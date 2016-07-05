@@ -181,9 +181,23 @@ public interface PropertiesServerInter {
 	public void copyEnv(String system, String version, String env, String newEnv) throws Exception;
 	
 	
-	
+	/**
+	 * 获取环境参数
+	 * @param system
+	 * @param version
+	 * @param env
+	 * @return
+	 * @throws Exception
+	 */
 	public EnvInfo getEnv(String system, String version, String env) throws Exception;
-	
+	/**
+	 * 获取配置list
+	 * @param system
+	 * @param version
+	 * @param env
+	 * @return
+	 * @throws Exception
+	 */
 	public List<PropertyInfo> getPropertyInfos(String system, String version, String env) throws Exception;
 
 }
