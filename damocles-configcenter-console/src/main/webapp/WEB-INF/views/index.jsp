@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<title>Hestia Fortune System</title>
+<title>ConfigCenter</title>
 
 <link href="${ctx}/static/jquery-validation/1.11.1/validate.css"
 	type="text/css" rel="stylesheet" />
@@ -125,7 +125,7 @@
 	</div>
 	<div region="south" split="true"
 		style="height: 30px; background: #D2E0F2;">
-		<div class="footer">Damocles Sysetem 版权@意真（上海）金融信息服务有限公司</div>
+		<div class="footer">Damocles System 版权@意真（上海）金融信息服务有限公司</div>
 	</div>
 
 	<div region="west" split="true" title="导航菜单" style="width: 180px;"
@@ -150,49 +150,5 @@
 		<div id="copy" data-options="iconCls:'icon-remove',name:'copy'">复制</div>
 	</div>
 
-	<!-- 修改密码 -->
-	<div id="Password_dlg" class="easyui-dialog" iconCls="icon-edit"
-		style="width: 400px; height: 250px; padding: 10px 20px" closed="true"
-		buttons="#Password_dlg-buttons">
-		<form id="Password_fm" method="post">
-			<table class="m_table" style="width: 100%;">
-				<tr>
-					<td><label>账号</label></td>
-					<td><input type="hidden" name="staffid" value="${staff.id}">${staff.name}
-					</td>
-				</tr>
-				<tr>
-					<td><label>登录名</label></td>
-					<td><input type="hidden" name="loginInfoid"
-						value="${loginInfo.id}">${loginInfo.username}</td>
-				</tr>
-				<tr>
-					<td><label class="bitian">原密码</label></td>
-					<td><input class="easyui-validatebox" type="password"
-						name="oldPassword" id="oldPassword" data-options="required:true" />
-					</td>
-				</tr>
-				<tr>
-					<td><label class="bitian">新密码</label></td>
-					<td><input class="easyui-validatebox" type="password"
-						name="newPassword" id="newPassword" data-options="required:true" />
-					</td>
-				</tr>
-				<tr>
-					<td><label class="bitian">重复新密码</label></td>
-					<td><input class="easyui-validatebox" type="password"
-						name="newPassword2" id="newPassword2" data-options="required:true"
-						validType="passwordEqual" /></td>
-				</tr>
-			</table>
-		</form>
-	</div>
-	<!-- 修改密码保存取消 -->
-	<div id="Password_dlg-buttons">
-		<a href="#" class="easyui-linkbutton" iconCls="icon-ok"
-			onclick="savePassword()">保存</a> <a href="#" class="easyui-linkbutton"
-			iconCls="icon-cancel"
-			onclick="javascript:$('#Password_dlg').dialog('close')">取消</a>
-	</div>
 </body>
 </html>
