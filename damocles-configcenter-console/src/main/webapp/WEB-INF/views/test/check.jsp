@@ -72,22 +72,37 @@ function formatUrl(product){
 		checkOnSelect:true,
 		selectOnCheck:true,
 		toolbar:'#tb',
-		sortName:'name',
-        sortOrder:'asc',
+		sortName:'tag,name',
+       sortOrder:'desc,asc',
         remoteSort:false ,
-        rowStyler: function(index,row){
-			return 'width:400; overflow:hidden; white-space:nowrap; text-overflow:ellipsis';    
-	}
-        
-       
-		
+        multiSort:true,
+        nowrap:false
+        	
 	">
 	<thead>
 		<tr>
-			<th data-options="field:'name',width:400,align:'center'">名称</th>
-			<th data-options="field:'value',width:400,align:'center'">内容</th>
+		<th data-options="field:'tag',width:100,align:'center',sorter:function(a,b){  
+				if(null == a ){
+				if (null == b )
+				return 0;
+				else
+				   return -1 ;
+				   }
+				else if (null == b)
+				return 1;
+				return a.localeCompare(b);
+			},
+			styler: function(value,row,index){
+				if (null != value ){
+					return 'color:'+intToARGB(hashCode(value))+';';
+				}
+			}
+			
+			 ">tag</th>
+			<th data-options="field:'name',width:400,align:'center'">键</th>
+			<th data-options="field:'value',width:400,align:'center'">值</th>
 			<th data-options="field:'memo',width:100,align:'center'">备注</th>
-			<th data-options="field:'tag',width:100,align:'center'">标签</th>
+			
 		    <th data-options="field:'opt',formatter:formatOpt,width:90,align:'center'">操作</th> 
 		    <th data-options="field:'opt1',formatter:formatOpt1,width:90,align:'center'">查看</th> 
 		</tr>
@@ -98,4 +113,21 @@ function formatUrl(product){
 <div id ='tb'>
 </div>
 
+
+<script type="text/javascript">
+function hashCode(str) { // java String#hashCode
+    var hash = 0;
+    for (var i = 0; i <  str.length; i++) {
+       hash = str.charCodeAt(i) + ((hash <<  5) - hash);
+    }
+    return hash;
+} 
+
+function intToARGB(i){
+    return ((i >> 24)& 0xFF).toString(16) + 
+           ((i >> 16)& 0xFF).toString(16) + 
+           ((i >> 8)& 0xFF).toString(16) + 
+           (i& 0xFF).toString(16);
+}
+</script>
 </html>
