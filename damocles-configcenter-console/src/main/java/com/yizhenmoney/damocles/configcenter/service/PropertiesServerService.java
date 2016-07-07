@@ -57,7 +57,7 @@ public class PropertiesServerService implements PropertiesServerInter {
 						return Arrays.asList(adminAcl);
 					}
 				}).authorization(Constants.DIGEST, adminAuth.getBytes("utf-8"))
-				.retryPolicy(new ExponentialBackoffRetry(3, 10000)).namespace(Constants.CONFIG_CENTER_NAMESPACE)
+				.retryPolicy(new ExponentialBackoffRetry(1000, 3)).namespace(Constants.CONFIG_CENTER_NAMESPACE)
 				.build();
 		client.start();
 		if (client.checkExists().forPath(Constants.PROPERTY_PATH) == null)

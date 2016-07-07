@@ -27,7 +27,7 @@ public class ZooKeeperPropertiesService implements PropertiesClientInter {
 		zkIp = new String(Base64.decodeBase64(tokenInfos[0]));
 		CuratorFramework originClient = CuratorFrameworkFactory.builder().connectString(zkIp).sessionTimeoutMs(5000)
 				.connectionTimeoutMs(5000).authorization(Constants.DIGEST, Constants.READ_AUTH.getBytes("utf-8"))
-				.retryPolicy(new ExponentialBackoffRetry(3, 10000)).namespace(Constants.CONFIG_CENTER_NAMESPACE)
+				.retryPolicy(new ExponentialBackoffRetry(1000, 3)).namespace(Constants.CONFIG_CENTER_NAMESPACE)
 				.build();
 		originClient.start();
 		String shortToken = tokenInfos[1];
