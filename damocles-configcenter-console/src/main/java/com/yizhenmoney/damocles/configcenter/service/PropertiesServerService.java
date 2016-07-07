@@ -142,8 +142,8 @@ public class PropertiesServerService implements PropertiesServerInter {
 		String passowrd = RandomStringUtils.random(8, true, true);
 		String shortToken = DESCoder.md5(RandomStringUtils.random(8, true, true));
 		String digest = system + Constants.TOKEN_SPLIT + passowrd;
-		System.out.println("digest:" + digest);
-		System.out.println("shortToken:" + shortToken);
+//		System.out.println("digest:" + digest);
+//		System.out.println("shortToken:" + shortToken);
 		token.setAuth(digest);
 		token.setPath(path);
 
