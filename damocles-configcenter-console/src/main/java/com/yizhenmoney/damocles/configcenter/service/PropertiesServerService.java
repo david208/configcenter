@@ -206,8 +206,13 @@ public class PropertiesServerService implements PropertiesServerInter {
 			}
 		}
 
+		try{
 		if (isAlone) {
 			curatorTransactionFinal.commit();
+		}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
