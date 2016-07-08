@@ -29,6 +29,68 @@
 	type="text/javascript"></script>
 <script src="${ctx}/static/js/index.js" type="text/javascript"></script>
 <script>
+
+//弹出一个输入框，输入一段文字，可以提交  
+function prom1(system) {  
+    var name = prompt("请输入新的版本", ""); //将输入的内容赋给变量 name ，  
+
+    //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
+    if (name)//如果返回的有内容  
+    {  
+    	$.post("${ctx}/addVersion?system="+system+"&version="+name,function(data){InitLeftMenu();});
+    	
+    }  
+
+}  
+function prom2(system,version) {  
+    var name = prompt("请输入新的环境", ""); //将输入的内容赋给变量 name ，  
+
+    //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
+    if (name)//如果返回的有内容  
+    {  
+    	$.post("${ctx}/addEnv?system="+system+"&version="+version+"&env="+name,function(data){InitLeftMenu();});
+    	
+    }  
+
+}
+//复制粘贴
+function copy1(system,version) {  
+    var name = prompt("请输入新的版本", ""); //将输入的内容赋给变量 name ，  
+
+    //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
+    if (name)//如果返回的有内容  
+    {  
+    	$.post("${ctx}/copyVersion?system="+system+"&version="+version+"&newVersion="+name,function(data){InitLeftMenu();});
+    	
+    }  
+
+}  
+function copy2(system,version,env) {  
+    var name = prompt("请输入新的版本", ""); //将输入的内容赋给变量 name ，  
+
+    //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
+    if (name)//如果返回的有内容  
+    {  
+    	$.post("${ctx}/copyEnv?system="+system+"&version="+version+"&env="+env+"&newEnv="+name,function(data){InitLeftMenu();});
+    	
+    }  
+
+}  
+//这是删除
+function deletes2(system) {  
+	$.post("${ctx}/deleteSystem?system="+system,function(data){InitLeftMenu();});
+}  
+function deletes1(system,version) {  
+	$.post("${ctx}/deleteVersion?system="+system+"&version="+version,function(data){InitLeftMenu();});
+}  
+function deletes(system,version,env) {  
+    	$.post("${ctx}/deleteEnv?system="+system+"&version="+version+"&env="+env,function(data){InitLeftMenu();});
+}  
+//导出
+function exportProp(system,version,env) {  
+    	$.post("${ctx}/exportProperties?system="+system+"&version="+version+"&env="+env,function(data){InitLeftMenu();});
+}  
+
 	$(function() {
 		InitLeftMenu();
 	});
@@ -37,23 +99,60 @@
 		if(item.name == 'add'){
 			if(node.attributes.type==1){
 				var system = node.text;
+				prom1(system);
+			}
+			else if(node.attributes.type==2){
 				debugger;
-				$.post("${ctx}/addVersion?system="+system+"&version="+"1.324",function(data){
-					alert(data);
-				});
+			 var system =	$('#menu').tree("getParent",node.target).text;
+			 var version = node.text;
+			 var length =	$('#menu').tree("getChildren",node.target).length;//判断是否有子节点长度
+			 if (length<1){
+				 prom2(system,version); 
+			 }
+			}
+		}
+		else if (item.name == 'deletes'){
+			if(node.attributes.type==1){
+				var system = node.text;
+				deletes2(system);
 			}
 			else if(node.attributes.type==2){
 			 var system =	$('#menu').tree("getParent",node.target).text;
 			 var version = node.text;
-				debugger;
-				$.post("${ctx}/addEnv?system="+system+"&version="+version+"&env="+"1.1",function(data){
-					alert(data);
-				});
+			 deletes1(system,version);
 			}
+			else if(node.attributes.type==3){				
+				 var version1 =	$('#menu').tree("getParent",node.target);
+				 var env = node.text;
+				 var version =	$('#menu').tree("getParent",node.target).text;
+				 var system =	$('#menu').tree("getParent",version1.target).text;
+				 deletes(system,version,env);
+				}
 		}
-		else if (item.name == 'copy'){
-			
+		else if(item.name == 'copy'){
+			if(node.attributes.type==2){
+				 var system =	$('#menu').tree("getParent",node.target).text;
+				 var version = node.text;
+				 copy1(system,version);
+				}
+				else if(node.attributes.type==3){				
+					 var version1 =	$('#menu').tree("getParent",node.target);
+					 var env = node.text;
+					 var version =	$('#menu').tree("getParent",node.target).text;
+					 var system =	$('#menu').tree("getParent",version1.target).text;
+					 copy2(system,version,env);
+					}
 		}
+		else if(item.name == 'exportProp'){	
+				if(node.attributes.type==3){				
+					 var version1 =	$('#menu').tree("getParent",node.target);
+					 var env = node.text;
+					 var version =	$('#menu').tree("getParent",node.target).text;
+					 var system =	$('#menu').tree("getParent",version1.target).text;
+					 exportProp(system,version,env);
+					}
+		}
+	
 	}
 
 	//初始化左侧
@@ -84,6 +183,8 @@
 						
 						var add = $('#add')[0];
 						var copy = $('#copy')[0];
+						var deletes = $('#deletes')[0];
+						var exportProp = $('#exportProp')[0];
 						if (1 == node.attributes.type) {
 							$('#mm').menu('disableItem', copy);
 							$('#mm').menu('enableItem', add);
@@ -91,9 +192,12 @@
 						} else if (3 == node.attributes.type) {
 							$('#mm').menu('disableItem', add);
 							$('#mm').menu('enableItem', copy);
+							$('#mm').menu('enableItem', exportProp);
 						} else {
 							$('#mm').menu('enableItem', copy);
 							$('#mm').menu('enableItem', add);
+							$('#mm').menu('enableItem', deletes);
+							$('#mm').menu('disableItem', exportProp);
 						} 
 
 						// 显示快捷菜单
@@ -146,8 +250,10 @@
 
 	<div id="mm" 
 		style="width: 150px;">
-		<div id="add" data-options="iconCls:'icon-save',name:'add'">新增</div>
-		<div id="copy" data-options="iconCls:'icon-remove',name:'copy'">复制</div>
+		<div id="add" data-options="iconCls:'icon-save',name:'add'">新增</div>		
+		<div id="deletes" data-options="iconCls:'icon-remove',name:'deletes'">删除</div>
+		<div id="exportProp" data-options="iconCls:'icon-print',name:'exportProp'">导出</div>
+		<div id="copy" data-options="iconCls:'icon-cut',name:'copy'">复制</div>
 	</div>
 
 </body>
