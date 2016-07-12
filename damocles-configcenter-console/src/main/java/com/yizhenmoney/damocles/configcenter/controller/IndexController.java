@@ -1,18 +1,21 @@
 package com.yizhenmoney.damocles.configcenter.controller;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -74,10 +77,11 @@ public class IndexController {
 	// 导出properties
 	@RequestMapping("/exportProperties")
 	@ResponseBody
-	public String exportProperties(String system, String version, String env) throws Exception {
+	public void exportProperties(String system, String version, String env,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		Properties prop = new Properties(); //properties对象 
-		String Path="E:/property/"+system+"/"+version+"/"+env; //绝对路径
-		File file = new File(Path);
+		String path=request.getServletContext().getRealPath("/upload/"+system+"/"+version+"/"+env);
+//		String path="E:/property/"+system+"/"+version+"/"+env; //绝对路径
+		File file = new File(path);
 		   if(!file.exists()){
 		    file.mkdirs();
 		   }
@@ -86,14 +90,55 @@ public class IndexController {
 			prop.put(propertyInfo.get(i).getName(), propertyInfo.get(i).getValue());
 		}
 		// 保存
-		FileOutputStream out = new FileOutputStream(Path+"/program.properties"); 
+//		FileOutputStream outputStream = new FileOutputStream(path+"/123.properties"); 
+        OutputStream outputStream = new FileOutputStream(path+"/123.properties");
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(outputStream, "utf-8"));
 		// 为properties添加注释
-		prop.store(out, "the properties's comment");
+		prop.store(out, "the properties's comment ");
 		out.close();
-		return Path;
+		
+		//String downLoadPath = excelName;
+		// 创建要下载的文件的对象(参数为要下载的文件在服务器上的路径)
+		File serverFile = new File(path+"/123.properties");
+
+		// 设置要显示在保存窗口的文件名，如果文件名中有中文的话，则要设置字符集，否则会出现乱码。另外，要写上文件后缀名
+		String fileName = java.net.URLEncoder.encode(system+"-"+version+"-"+env+".properties", "utf-8");
+		// 该步是最关键的一步，使用setHeader()方法弹出"是否要保存"的对话框，打引号的部分都是固定的值，不要改变
+		response.setHeader("Content-disposition", "attachment;filename=" + fileName);
+
+		/*
+		 * 以下四行代码经测试似乎可有可无，可能是我测试的文件太小或者其他什么原因。。。
+		 */
+		response.setContentType("application/msword");
+		// 定义下载文件的长度 /字节
+		long fileLength = serverFile.length();
+		// 把长整形的文件长度转换为字符串
+		String length = String.valueOf(fileLength);
+		// 设置文件长度(如果是Post请求，则这步不可少)
+		response.setHeader("content_Length", length);
+
+		response.setCharacterEncoding("UTF-8");
+		/*
+		 * 以上内容仅是下载一个空文件 以下内容用于将服务器中相应的文件内容以流的形式写入到该空文件中
+		 */
+		// 获得一个 ServletOutputStream(向客户端发送二进制数据的输出流)对象
+		OutputStream servletOutPutStream = response.getOutputStream();
+		// 获得一个从服务器上的文件myFile中获得输入字节的输入流对象
+		FileInputStream fileInputStream = new FileInputStream(serverFile);
+	
+		byte bytes[] = new byte[1024];// 设置缓冲区为1024个字节，即1KB
+		int len = 0;
+	//	prop.store(servletOutPutStream, "");
+		// 读取数据。返回值为读入缓冲区的字节总数,如果到达文件末尾，则返回-1
+		while ((len = fileInputStream.read(bytes)) != -1) {
+			// 将指定 byte数组中从下标 0 开始的 len个字节写入此文件输出流,(即读了多少就写入多少)
+			servletOutPutStream.write(bytes, 0, len);
+		}
+
+		servletOutPutStream.close();
+		fileInputStream.close();
 	}
 
-	
 	//导入properties
 	@RequestMapping("/importProperties")
 	@ResponseBody
@@ -144,18 +189,11 @@ public class IndexController {
 			}
 
 		    Properties props = new Properties();
-		    
-//		    InputStream in = new FileInputStream("E:/property/tpp/1.0.0/dev1/program.properties");
-
-		    // 或使用文件输入流(不推荐)，假设当前工作目录为bin
-		    //InputStream in = new FileInputStream("./config.properties");
-
 		    props.load(in);
 		    in.close();
 		    
 		    Map<String,PropertyInfo> map = new HashMap<String,PropertyInfo>();
-		  
-		    
+				    
 		    Enumeration en = props.propertyNames();
 		    while (en.hasMoreElements()){		    	
 		        String k =  (String) en.nextElement();
@@ -208,6 +246,14 @@ public class IndexController {
 	@ResponseBody
 	public String copyEnv(String system, String version,String env ,String newEnv) throws Exception {
 		return propertiesService.copyEnv(system, version,env,newEnv);
+
+	}
+	
+	// 增加系统
+	@RequestMapping("/addSystem")
+	@ResponseBody
+	public String addSystem(String system) throws Exception {
+		return propertiesService.addSystem(system);
 
 	}
 	
@@ -284,8 +330,13 @@ public class IndexController {
 	@RequestMapping("/addPropertys")
 	@ResponseBody
 	public ResultVo addPropertys(String system, String version, String env, String name, PropertyInfo property) throws Exception {
+		String replaceName=name.replace(" ", "");
+		if(replaceName.equals("")||replaceName.equals(null)){
+			return new ResultVo(-1,"主键为空");
+		}
+		property.setName(replaceName);
 		Map<String,PropertyInfo> map = new HashMap<String,PropertyInfo>();
-		map.put(name, property);
+		map.put(replaceName, property);
 		propertiesService.addPropertys(system, version, env,map);
 		return new ResultVo(1, "添加成功");
 

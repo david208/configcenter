@@ -38,14 +38,15 @@ function formatOpt(opt,row){
 }
 
 function formatOpt1(opt,row){	
+	debugger;
 	var name="'"+row.name+"'";
-	return "<a href='javascript:void(0);' onclick=checkConfig("+name+")>删除</a>";		
+	return "<a href='javascript:void(0);' onclick=deleteConfig("+name+")>删除</a>";		
 }
 function updateConfig(name) {
 	window.location.href = "${ctx}/editProperty?system=${system}&version=${version}&env=${env}&name="+name;
 }
 
-function checkConfig(name) {
+function deleteConfig(name) {
 	$.ajax({
 		url : "${ctx}/deleteProperty?system=${system}&version=${version}&env=${env}&name="+name,
 		dataType : 'json',

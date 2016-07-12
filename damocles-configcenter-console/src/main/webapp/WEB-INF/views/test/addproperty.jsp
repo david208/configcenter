@@ -34,6 +34,7 @@ function submitForm() {
 	$("#searchForm").form('submit', {
 		url : "${ctx}/addPropertys?system=${system}&version=${version}&env=${env}",
 		success : function(data) {
+			debugger;
 			eval(" var data = "+data);
 			if (data.code >= 0) {
 				$.messager.show({
@@ -46,7 +47,7 @@ function submitForm() {
 			} else {
 				$.messager.show({
 					title : '添加失败',
-					msg : data.attachment,
+					msg : '添加配置失败',
 					timeout : 5000,
 					showType : 'slide'
 				});

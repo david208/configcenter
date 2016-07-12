@@ -68,9 +68,10 @@ function back(){
 	<hr>
 	<form id="searchForm" method="post">
 		<table>
-			<tr>			   
-				<td>键:</td>
-				<td><input class="easyui-validatebox" type="text" name="name" value="${propertyInfo.name}" data-options="required:true"></input></td>				
+			<tr>	
+			    <td>
+			    <input  type="hidden" name="name" id="name" value="${propertyInfo.name}"></input>	
+			    </td>	   
 			</tr>
 			<tr>
 			<td>值:</td>

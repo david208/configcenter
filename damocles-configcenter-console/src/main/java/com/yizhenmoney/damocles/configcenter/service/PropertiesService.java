@@ -68,6 +68,12 @@ public class PropertiesService {
 		return "ok";
 
 	}
+	
+	public String addSystem(String system) throws Exception {
+		propertiesServerService.addSystem(system, null);
+		return "ok";
+
+	}
 
 	public String addEnv(String system, String version, String env, String memo) throws Exception {
 		propertiesServerService.addEnv(system, version, env, memo, null);
