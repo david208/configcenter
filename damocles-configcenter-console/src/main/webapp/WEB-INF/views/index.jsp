@@ -78,18 +78,52 @@ function copy2(system,version,env) {
 }  
 //这是删除
 function deletes2(system) {  
-	$.post("${ctx}/deleteSystem?system="+system,function(data){InitLeftMenu();});
+    $.messager.defaults = { ok: "是", cancel: "否" };  
+    $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {  
+        if (data) {               
+        	$.post("${ctx}/deleteSystem?system="+system,function(data){InitLeftMenu();});
+        }  
+        else {              
+        }  
+    });
 }  
 function deletes1(system,version) {  
-	$.post("${ctx}/deleteVersion?system="+system+"&version="+version,function(data){InitLeftMenu();});
+    $.messager.defaults = { ok: "是", cancel: "否" };  
+    $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {  
+        if (data) {               
+        	$.post("${ctx}/deleteVersion?system="+system+"&version="+version,function(data){InitLeftMenu();});
+        }  
+        else {              
+        }  
+    });  
 }  
 function deletes(system,version,env) {  
-    	$.post("${ctx}/deleteEnv?system="+system+"&version="+version+"&env="+env,function(data){InitLeftMenu();});
+    $.messager.defaults = { ok: "是", cancel: "否" };  
+    $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {  
+        if (data) {               
+            $.post("${ctx}/deleteEnv?system="+system+"&version="+version+"&env="+env,function(data){InitLeftMenu();});
+        }  
+        else {              
+        }  
+    });     	
 }  
 //导出
 function exportProp(system,version,env) {  
-    	$.post("${ctx}/exportProperties?system="+system+"&version="+version+"&env="+env,function(data){InitLeftMenu();});
+	window.location.href="${ctx}/exportProperties?system="+system+"&version="+version+"&env="+env;
 }  
+
+//弹出一个输入框，输入一段文字，可以提交  
+function addSystem() {  
+    var name = prompt("请输入新的版本", ""); //将输入的内容赋给变量 name ，  
+
+    //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
+    if (name)//如果返回的有内容  
+    {  
+    	$.post("${ctx}/addSystem?system="+name,function(data){InitLeftMenu();});
+    	
+    }  
+
+}
 
 	$(function() {
 		InitLeftMenu();
@@ -233,9 +267,11 @@ function exportProp(system,version,env) {
 	</div>
 
 	<div region="west" split="true" title="导航菜单" style="width: 180px;"
-		id="west">
+		id="west" >
 		<div fit="true" border="false">
-			<ul id="menu" class="easyui-tree""></ul>
+			<a href="javascript:void(0)" style="vertical-align: middle;" class="easyui-linkbutton"
+					onclick="addSystem()">新增</a>
+			<ul id="menu" class="easyui-tree" ></ul>
 		</div>
 	</div>
 
