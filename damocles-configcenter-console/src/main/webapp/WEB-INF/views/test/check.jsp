@@ -38,13 +38,42 @@ function formatOpt(opt,row){
 }
 
 function formatOpt1(opt,row){	
-	debugger;
 	var name="'"+row.name+"'";
-	return "<a href='javascript:void(0);' onclick=deleteConfig("+name+")>删除</a>";		
+	return "<a href='javascript:void(0);' onclick=deletes("+name+")>删除</a>";		
 }
 function updateConfig(name) {
 	window.location.href = "${ctx}/editProperty?system=${system}&version=${version}&env=${env}&name="+name;
 }
+
+function deletes(name) {  
+    $.messager.defaults = { ok: "是", cancel: "否" };  
+    $.messager.confirm("操作提示", "您确定要执行删除操作吗？", function (data) {  
+        if (data) {               
+
+        	$.ajax({
+        		url : "${ctx}/deleteProperty?system=${system}&version=${version}&env=${env}&name="+name,
+        		dataType : 'json',
+        		success:function( data ){
+        			if(data.code == 1){
+        				$.messager.show({
+        					title:'处理成功',
+        					msg:'删除成功',
+        					timeout:5000,
+        					showType:'slide',
+        				});
+        			}
+        			else {
+        				$.messager.alert('Error',data.attachment);	
+        			}
+        			$("#tenderDatagridMain").datagrid('reload');
+        		}
+
+        	});
+        }  
+        else {              
+        }  
+    });     	
+} 
 
 function deleteConfig(name) {
 	$.ajax({
@@ -69,7 +98,7 @@ function deleteConfig(name) {
 }
 
 function add(){
-	window.location.href = '${ctx}/addProperty?system=${system}&version=${version}&env=${env}';
+   window.location.href = '${ctx}/addProperty?system=${system}&version=${version}&env=${env}';
 }
 function formatUrl(product){
 	debugger;
@@ -167,15 +196,15 @@ function uploadAndSubmit() {
 				if (data.code >= 0) {
 				
 					$.messager.show({
-						title : '添加配置',
-						msg :'添加配置成功',
+						title : '导入成功',
+						msg :'导入配置成功',
 						timeout : 5000,
 						showType : 'slide'
 					});
 					clearForm();
 				} else {
 					$.messager.show({
-						title : '添加黑名单',
+						title : '导入失败',
 						msg : data.attachment,
 						timeout : 5000,
 						showType : 'slide'

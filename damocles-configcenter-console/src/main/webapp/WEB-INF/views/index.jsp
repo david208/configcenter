@@ -36,8 +36,34 @@ function prom1(system) {
 
     //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
     if (name)//如果返回的有内容  
-    {  
-    	$.post("${ctx}/addVersion?system="+system+"&version="+name,function(data){InitLeftMenu();});
+    {  debugger;
+    	/*$.post("${ctx}/addVersion?system="+system+"&version="+name,function(data){InitLeftMenu();});*/
+    	$.ajax({
+    		
+    		url : "${ctx}/addVersion?system="+system+"&version="+name,
+    		dataType : 'json',
+    		success:function( data ){
+    			if(data.code == 1){
+    				$.messager.show({
+    					title:'处理成功',
+    					msg:'添加成功',
+    					timeout:5000,
+    					showType:'slide',
+    				});
+    			}
+    			else {
+    				$.messager.show({
+    					title:'处理失败',
+    					msg:'添加失败',
+    					timeout:5000,
+    					showType:'slide',
+    				});
+
+    			}
+    			InitLeftMenu();
+    		}
+
+    	});
     	
     }  
 
@@ -59,8 +85,32 @@ function copy1(system,version) {
 
     //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
     if (name)//如果返回的有内容  
-    {  
-    	$.post("${ctx}/copyVersion?system="+system+"&version="+version+"&newVersion="+name,function(data){InitLeftMenu();});
+    { 
+        $.ajax({  		
+    		url : "${ctx}/copyVersion?system="+system+"&version="+version+"&newVersion="+name,
+    		dataType : 'json',
+    		success:function( data ){
+    			if(data.code == 1){
+    				$.messager.show({
+    					title:'处理成功',
+    					msg:'复制成功',
+    					timeout:5000,
+    					showType:'slide',
+    				});
+    			}
+    			else {
+    				$.messager.show({
+    					title:'处理失败',
+    					msg:'名字重复',
+    					timeout:5000,
+    					showType:'slide',
+    				});
+
+    			}
+    			InitLeftMenu();
+    		}
+
+    	});
     	
     }  
 
@@ -71,8 +121,31 @@ function copy2(system,version,env) {
     //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
     if (name)//如果返回的有内容  
     {  
-    	$.post("${ctx}/copyEnv?system="+system+"&version="+version+"&env="+env+"&newEnv="+name,function(data){InitLeftMenu();});
-    	
+    	 $.ajax({  		
+     		url : "${ctx}/copyEnv?system="+system+"&version="+version+"&env="+env+"&newEnv="+name,
+     		dataType : 'json',
+     		success:function( data ){
+     			if(data.code == 1){
+     				$.messager.show({
+     					title:'处理成功',
+     					msg:'复制成功',
+     					timeout:5000,
+     					showType:'slide',
+     				});
+     			}
+     			else {
+     				$.messager.show({
+     					title:'处理失败',
+     					msg:'名字重复',
+     					timeout:5000,
+     					showType:'slide',
+     				});
+
+     			}
+     			InitLeftMenu();
+     		}
+
+     	});
     }  
 
 }  
@@ -114,13 +187,38 @@ function exportProp(system,version,env) {
 
 //弹出一个输入框，输入一段文字，可以提交  
 function addSystem() {  
+	debugger;
     var name = prompt("请输入新的版本", ""); //将输入的内容赋给变量 name ，  
 
     //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
     if (name)//如果返回的有内容  
     {  
-    	$.post("${ctx}/addSystem?system="+name,function(data){InitLeftMenu();});
-    	
+    /*	$.post("${ctx}/addSystem?system="+name,function(data){InitLeftMenu();});*/
+    	$.ajax({
+    		url : "${ctx}/addSystem?system="+name,
+    		dataType : 'json',
+    		success:function( data ){
+    			if(data.code == 1){
+    				$.messager.show({
+    					title:'处理成功',
+    					msg:'添加成功',
+    					timeout:5000,
+    					showType:'slide',
+    				});
+    			}
+    			else {
+    				$.messager.show({
+    					title:'处理失败',
+    					msg:'添加失败',
+    					timeout:5000,
+    					showType:'slide',
+    				});
+
+    			}
+    			InitLeftMenu();
+    		}
+
+    	});
     }  
 
 }
@@ -136,13 +234,9 @@ function addSystem() {
 				prom1(system);
 			}
 			else if(node.attributes.type==2){
-				debugger;
 			 var system =	$('#menu').tree("getParent",node.target).text;
 			 var version = node.text;
-			 var length =	$('#menu').tree("getChildren",node.target).length;//判断是否有子节点长度
-			 if (length<1){
 				 prom2(system,version); 
-			 }
 			}
 		}
 		else if (item.name == 'deletes'){
@@ -228,8 +322,13 @@ function addSystem() {
 							$('#mm').menu('enableItem', copy);
 							$('#mm').menu('enableItem', exportProp);
 						} else {
-							$('#mm').menu('enableItem', copy);
-							$('#mm').menu('enableItem', add);
+							var length =$('#menu').tree("getChildren",node.target).length;//判断是否有子节点长度
+							if (length <1){
+								$('#mm').menu('enableItem', add);
+							}else{
+								$('#mm').menu('disableItem', add);
+							}
+							$('#mm').menu('enableItem', copy);							
 							$('#mm').menu('enableItem', deletes);
 							$('#mm').menu('disableItem', exportProp);
 						} 

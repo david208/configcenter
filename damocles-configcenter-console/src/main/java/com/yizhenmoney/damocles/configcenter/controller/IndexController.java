@@ -1,11 +1,11 @@
 package com.yizhenmoney.damocles.configcenter.controller;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Enumeration;
@@ -143,6 +143,10 @@ public class IndexController {
 	@RequestMapping("/importProperties")
 	@ResponseBody
 	public  ResultVo importProperties(String system, String version, String env,HttpServletRequest request) throws Exception {
+		List<PropertyInfo> property = propertiesService.getPropertyInfos(system, version, env);
+		if (property.size()>0){
+				return new ResultVo(-1,"主键已有值");			
+		}
 		// 判断form是否为上传表单
 		if (!ServletFileUpload.isMultipartContent(request)) {
 			throw new RuntimeException("不是文件上传表单！");
@@ -154,7 +158,9 @@ public class IndexController {
 		// 解决上传文件 中文名乱码
 		fileUpload.setHeaderEncoding("utf-8");
 		
-		InputStream in=null;
+	//	InputStream in=null;
+		
+		BufferedReader in=null;
 		// 步骤三 解析请求
 	
 			List<FileItem> list = fileUpload.parseRequest(request);
@@ -181,8 +187,8 @@ public class IndexController {
 					}
 
 					// 上传文件内容
-					in = new BufferedInputStream(fileItem
-							.getInputStream());
+				//	in = new BufferedInputStream(fileItem.getInputStream()); 这个不能解决中文乱码
+					in=new BufferedReader(new InputStreamReader(fileItem.getInputStream(),"UTF-8"));  
 
 
 				}
@@ -236,33 +242,55 @@ public class IndexController {
 	// 复制粘贴版本
 	@RequestMapping("/copyVersion")
 	@ResponseBody
-	public String copyVersion(String system, String version, String newVersion) throws Exception {
-		return propertiesService.copyVersion(system, version, newVersion);
-
+	public ResultVo copyVersion(String system, String version, String newVersion) throws Exception {		 
+		try{
+			propertiesService.copyVersion(system, version, newVersion);
+		    return new ResultVo(1,"成功");
+		}catch (Exception e) {			
+			return new ResultVo(-1, "失败");
+		}
 	}
 	
 	// 复制粘贴环境
 	@RequestMapping("/copyEnv")
 	@ResponseBody
-	public String copyEnv(String system, String version,String env ,String newEnv) throws Exception {
-		return propertiesService.copyEnv(system, version,env,newEnv);
-
+	public ResultVo copyEnv(String system, String version,String env ,String newEnv) throws Exception {
+		if(env.equals(newEnv)){
+			return new ResultVo(-1, "失败");
+		}
+		try{
+			propertiesService.copyEnv(system, version,env,newEnv);			
+		    return new ResultVo(1,"成功");
+		}catch (Exception e) {			
+			return new ResultVo(-1, "失败");
+		}
 	}
 	
 	// 增加系统
 	@RequestMapping("/addSystem")
 	@ResponseBody
-	public String addSystem(String system) throws Exception {
-		return propertiesService.addSystem(system);
+	public ResultVo addSystem(String system) throws Exception {
+		try{
+		propertiesService.addSystem(system);
+		return new ResultVo(1,"成功");
+		}catch (Exception e) {
+			
+			return new ResultVo(-1, "失败");
+		}
 
 	}
 	
 	// 增加版本
 	@RequestMapping("/addVersion")
 	@ResponseBody
-	public String addVersion(String system, String version) throws Exception {
-		return propertiesService.addVersion(system, version);
-
+	public ResultVo addVersion(String system, String version) throws Exception {
+		try{
+	        propertiesService.addVersion(system, version);
+		    return new ResultVo(1,"成功");
+		}catch (Exception e) {
+			
+			return new ResultVo(-1, "失败");
+		}
 	}
 
 	// 增加环境
@@ -333,6 +361,12 @@ public class IndexController {
 		String replaceName=name.replace(" ", "");
 		if(replaceName.equals("")||replaceName.equals(null)){
 			return new ResultVo(-1,"主键为空");
+		}
+		List<PropertyInfo> propertyInfo = propertiesService.getPropertyInfos(system, version, env);
+		for(int i=0;i<propertyInfo.size();i++){
+			if(replaceName.equals(propertyInfo.get(i).getName())){
+				return new ResultVo(-1,"主键重复");
+			}
 		}
 		property.setName(replaceName);
 		Map<String,PropertyInfo> map = new HashMap<String,PropertyInfo>();
