@@ -33,8 +33,8 @@ input {
 function submitForm() {
 	$("#searchForm").form('submit', {
 		url : "${ctx}/addPropertys?system=${system}&version=${version}&env=${env}",
+		dataType : 'json',
 		success : function(data) {
-			debugger;
 			eval(" var data = "+data);
 			if (data.code >= 0) {
 				$.messager.show({
@@ -47,14 +47,15 @@ function submitForm() {
 			} else {
 				$.messager.show({
 					title : '添加失败',
-					msg : '添加配置失败',
+					msg : data.attachment,
 					timeout : 5000,
 					showType : 'slide'
 				});
+				alert("新增失败");
 			}
 			window.location.href = '${ctx}/getProperties?system=${system}&version=${version}&env=${env}';
 		}
-	});
+	});		
 }
 function clearForm() {
 	$('#searchForm').form('clear');
