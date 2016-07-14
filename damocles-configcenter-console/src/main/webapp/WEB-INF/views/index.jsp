@@ -54,13 +54,13 @@ function prom1(system) {
     			else {
     				$.messager.show({
     					title:'处理失败',
-    					msg:'添加失败',
+    					msg:'名称重复',
     					timeout:5000,
     					showType:'slide',
     				});
 
     			}
-    			InitLeftMenu();
+    			InitLeftMenu(system,null);
     		}
 
     	});
@@ -74,8 +74,33 @@ function prom2(system,version) {
     //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
     if (name)//如果返回的有内容  
     {  
-    	$.post("${ctx}/addEnv?system="+system+"&version="+version+"&env="+name,function(data){InitLeftMenu();});
     	
+    	$.ajax({
+    		
+    		url : "${ctx}/addEnv?system="+system+"&version="+version+"&env="+name,
+    		dataType : 'json',
+    		success:function( data ){
+    			if(data.code == 1){
+    				$.messager.show({
+    					title:'处理成功',
+    					msg:'添加成功',
+    					timeout:5000,
+    					showType:'slide',
+    				});
+    			}
+    			else {
+    				$.messager.show({
+    					title:'处理失败',
+    					msg:'名称重复',
+    					timeout:5000,
+    					showType:'slide',
+    				});
+
+    			}
+    			InitLeftMenu(system,version);
+    		}
+
+    	});
     }  
 
 }
@@ -107,7 +132,7 @@ function copy1(system,version) {
     				});
 
     			}
-    			InitLeftMenu();
+    			InitLeftMenu(system,null);
     		}
 
     	});
@@ -142,7 +167,7 @@ function copy2(system,version,env) {
      				});
 
      			}
-     			InitLeftMenu();
+     			InitLeftMenu(system,version);
      		}
 
      	});
@@ -154,7 +179,7 @@ function deletes2(system) {
     $.messager.defaults = { ok: "是", cancel: "否" };  
     $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {  
         if (data) {               
-        	$.post("${ctx}/deleteSystem?system="+system,function(data){InitLeftMenu();});
+        	$.post("${ctx}/deleteSystem?system="+system,function(data){InitLeftMenu(null,null);});
         }  
         else {              
         }  
@@ -164,7 +189,7 @@ function deletes1(system,version) {
     $.messager.defaults = { ok: "是", cancel: "否" };  
     $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {  
         if (data) {               
-        	$.post("${ctx}/deleteVersion?system="+system+"&version="+version,function(data){InitLeftMenu();});
+        	$.post("${ctx}/deleteVersion?system="+system+"&version="+version,function(data){InitLeftMenu(system,null);});
         }  
         else {              
         }  
@@ -174,7 +199,7 @@ function deletes(system,version,env) {
     $.messager.defaults = { ok: "是", cancel: "否" };  
     $.messager.confirm("操作提示", "您确定要执行操作吗？", function (data) {  
         if (data) {               
-            $.post("${ctx}/deleteEnv?system="+system+"&version="+version+"&env="+env,function(data){InitLeftMenu();});
+            $.post("${ctx}/deleteEnv?system="+system+"&version="+version+"&env="+env,function(data){InitLeftMenu(system,version);});
         }  
         else {              
         }  
@@ -188,7 +213,7 @@ function exportProp(system,version,env) {
 //弹出一个输入框，输入一段文字，可以提交  
 function addSystem() {  
 	debugger;
-    var name = prompt("请输入新的版本", ""); //将输入的内容赋给变量 name ，  
+    var name = prompt("请输入新的系统", ""); //将输入的内容赋给变量 name ，  
 
     //这里需要注意的是，prompt有两个参数，前面是提示的话，后面是当对话框出来后，在对话框里的默认值  
     if (name)//如果返回的有内容  
@@ -209,13 +234,13 @@ function addSystem() {
     			else {
     				$.messager.show({
     					title:'处理失败',
-    					msg:'添加失败',
+    					msg:'名称重复',
     					timeout:5000,
     					showType:'slide',
     				});
 
     			}
-    			InitLeftMenu();
+    			InitLeftMenu(null,null);
     		}
 
     	});
@@ -224,7 +249,7 @@ function addSystem() {
 }
 
 	$(function() {
-		InitLeftMenu();
+		InitLeftMenu(null,null);
 	});
 
 	function append(item,node) {
@@ -284,11 +309,11 @@ function addSystem() {
 	}
 
 	//初始化左侧
-	function InitLeftMenu() {
+	function InitLeftMenu(system,version) {
 
 		$('#menu').tree(
 				{
-					url : '${ctx}/menu2',
+					url : '${ctx}/menu2?system='+system+'&version='+version,
 					onClick : function(node) {
 						if (3 == node.attributes.type) {
 							createTabsIframe('tabs', node.attributes.allPath, "${ctx}"

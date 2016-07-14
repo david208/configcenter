@@ -296,8 +296,15 @@ public class IndexController {
 	// 增加环境
 	@RequestMapping("/addEnv")
 	@ResponseBody
-	public String addEnv(String system, String version, String env, String memo) throws Exception {
-		return propertiesService.addEnv(system, version, env, memo);
+	public ResultVo addEnv(String system, String version, String env, String memo) throws Exception {
+		try{
+			propertiesService.addEnv(system, version, env, memo);
+		    return new ResultVo(1,"成功");
+		}catch (Exception e) {
+			
+			return new ResultVo(-1, "失败");
+		}
+
 
 	}
 
@@ -378,9 +385,9 @@ public class IndexController {
 	
 	@RequestMapping("/menu2")
 	@ResponseBody
-	public List<MenuVo2> menu2() {
+	public List<MenuVo2> menu2(String system,String version) {
 		try {
-			return propertiesService.getMenu();
+			return propertiesService.getMenu(system,version);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
