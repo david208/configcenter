@@ -108,7 +108,7 @@ public class PropertiesService {
 
 	}
 	
-	public List<MenuVo2> getMenu() throws Exception {
+	public List<MenuVo2> getMenu(String systemName,String versionName) throws Exception {
 		List<String> systemList = propertiesServerService.getSystemList();
 		List<MenuVo2> menuVos = new LinkedList<>();
 		for (String system : systemList) {
@@ -118,6 +118,9 @@ public class PropertiesService {
 				menuVo = MenuVo2.createLeafNode(system, null, "1", "");
 			} else {
 				menuVo = MenuVo2.createTreeNode(system, "1", "");
+				if(system.equals(systemName)){
+					menuVo.setState("open");
+				}
 
 			}
 
@@ -130,7 +133,9 @@ public class PropertiesService {
 					menuVo2 = MenuVo2.createLeafNode(version, null, "2", system);
 				} else {
 					menuVo2 = MenuVo2.createTreeNode(version, "2", system);
-
+					if(system.equals(systemName)&&version.equals(versionName)){
+						menuVo2.setState("open");
+					}
 				}
 				List<MenuVo2> menuVos3 = new LinkedList<>();
 				for (String env : envList) {

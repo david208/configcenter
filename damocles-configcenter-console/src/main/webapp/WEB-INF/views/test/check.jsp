@@ -205,7 +205,7 @@ function uploadAndSubmit() {
 				} else {
 					$.messager.show({
 						title : '导入失败',
-						msg : data.attachment,
+						msg : '页面存在主键不允许上传',
 						timeout : 5000,
 						showType : 'slide'
 					});
