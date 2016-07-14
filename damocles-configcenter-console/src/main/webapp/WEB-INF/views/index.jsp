@@ -54,7 +54,7 @@ function prom1(system) {
     			else {
     				$.messager.show({
     					title:'处理失败',
-    					msg:'添加失败',
+    					msg:'名称重复',
     					timeout:5000,
     					showType:'slide',
     				});
@@ -209,7 +209,7 @@ function addSystem() {
     			else {
     				$.messager.show({
     					title:'处理失败',
-    					msg:'添加失败',
+    					msg:'名称重复',
     					timeout:5000,
     					showType:'slide',
     				});
@@ -285,7 +285,7 @@ function addSystem() {
 
 	//初始化左侧
 	function InitLeftMenu() {
-
+debugger;
 		$('#menu').tree(
 				{
 					url : '${ctx}/menu2',

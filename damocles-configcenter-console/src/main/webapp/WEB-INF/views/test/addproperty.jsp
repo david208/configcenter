@@ -51,7 +51,7 @@ function submitForm() {
 					timeout : 5000,
 					showType : 'slide'
 				});
-				alert("新增失败");
+				alert("名称重复");
 			}
 			window.location.href = '${ctx}/getProperties?system=${system}&version=${version}&env=${env}';
 		}
