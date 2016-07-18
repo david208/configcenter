@@ -36,7 +36,6 @@ import com.yizhenmoney.damocles.configcenter.vo.ResultVo;
 @Controller
 public class IndexController {
 
-	
 	@RequestMapping("/")
 	public String index(Model model) {
 		return "/index";
