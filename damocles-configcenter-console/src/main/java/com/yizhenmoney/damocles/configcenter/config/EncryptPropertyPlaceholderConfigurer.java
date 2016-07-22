@@ -44,7 +44,7 @@ public class EncryptPropertyPlaceholderConfigurer extends PropertyPlaceholderCon
 	}
 
 	public static void main(String[] args) {
-		System.out.println(EncryptPropertyPlaceholderConfigurer.encodeBuffer("admin:123456", Constants.SECRET_KEY));
+		System.out.println(EncryptPropertyPlaceholderConfigurer.encodeBuffer("admin:1qaz@WSX", Constants.SECRET_KEY));
 	}
 
 }
