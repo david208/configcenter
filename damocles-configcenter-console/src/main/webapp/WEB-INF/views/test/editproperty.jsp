@@ -75,7 +75,9 @@ function back(){
 			</tr>
 			<tr>
 			<td>值:</td>
-				<td><input class="easyui-validatebox" type="text" name="value" value="${propertyInfo.value}" data-options="required:true"></input></td>
+				<td><div style="height:100px;position:relative;">
+				<textarea class="easyui-validatebox"  name="value" data-options="required:true" style="position:absolute;width:400px;height:100px">${propertyInfo.value}</textarea>
+			    </div></td>			    				
 			</tr>
 			<tr>			   
 				<td>备注:</td>

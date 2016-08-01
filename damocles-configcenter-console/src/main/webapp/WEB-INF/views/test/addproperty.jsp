@@ -71,11 +71,11 @@ function back(){
 		<table>
 			<tr>			   
 				<td>键:</td>
-				<td><input class="easyui-validatebox" type="text" name="name" data-options="required:true"></input></td>				
+				<td><textarea class="easyui-validatebox" name="name" data-options="required:true" style="width:250px;height:100px"></textarea></td>			
 			</tr>
 			<tr>
-			<td>值:</td>
-				<td><input class="easyui-validatebox" type="text" name="value" data-options="required:true"></input></td>
+			    <td>值:</td>
+			    <td><textarea class="easyui-validatebox" name="value" data-options="required:true" style="width:250px;height:100px"></textarea></td>
 			</tr>
 			<tr>			   
 				<td>备注:</td>
