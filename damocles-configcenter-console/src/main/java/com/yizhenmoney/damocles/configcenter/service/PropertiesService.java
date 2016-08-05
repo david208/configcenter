@@ -33,8 +33,44 @@ public class PropertiesService {
 
 	}
 
+	public String deleteSystem(String system) throws Exception {
+		propertiesServerService.deleteSystem(system);
+		return "ok";
+
+	}
+	
+	public String deleteVersion(String system, String version) throws Exception {
+		propertiesServerService.deleteVersion(system, version);
+		return "ok";
+
+	}
+
+	public String deleteEnv(String system, String version, String env) throws Exception {
+		propertiesServerService.deleteEnv(system, version, env);
+		return "ok";
+
+	}
+	
+	public String copyVersion(String system, String version,String newVersion) throws Exception {
+		propertiesServerService.copyVersion(system, version,newVersion);
+		return "ok";
+
+	}
+	
+	public String copyEnv(String system, String version,String env,String newEnv) throws Exception {
+		propertiesServerService.copyEnv(system, version,env,newEnv);
+		return "ok";
+
+	}
+	
 	public String addVersion(String system, String version) throws Exception {
 		propertiesServerService.addVersion(system, version, null);
+		return "ok";
+
+	}
+	
+	public String addSystem(String system) throws Exception {
+		propertiesServerService.addSystem(system, null);
 		return "ok";
 
 	}
@@ -51,8 +87,28 @@ public class PropertiesService {
 		return "ok";
 
 	}
+	public String deleteProperty(String system, String version, String env,String key)
+			throws Exception {
+		propertiesServerService.deleteProperty(system, version, env, key);
+		return "ok";
 
-	public List<MenuVo2> getMenu() throws Exception {
+	}
+	
+	public String editPropertys(String system, String version, String env,String key,PropertyInfo property)
+			throws Exception {
+		propertiesServerService.editProperty(system, version, env, key,property);
+		return "ok";
+
+	}
+	
+	public String addPropertys(String system, String version, String env, Map<String, PropertyInfo> properties)
+			throws Exception {
+		propertiesServerService.addProperties(system, version, env, properties,null);
+		return "ok";
+
+	}
+	
+	public List<MenuVo2> getMenu(String systemName,String versionName) throws Exception {
 		List<String> systemList = propertiesServerService.getSystemList();
 		List<MenuVo2> menuVos = new LinkedList<>();
 		for (String system : systemList) {
@@ -62,6 +118,9 @@ public class PropertiesService {
 				menuVo = MenuVo2.createLeafNode(system, null, "1", "");
 			} else {
 				menuVo = MenuVo2.createTreeNode(system, "1", "");
+				if(system.equals(systemName)){
+					menuVo.setState("open");
+				}
 
 			}
 
@@ -74,7 +133,9 @@ public class PropertiesService {
 					menuVo2 = MenuVo2.createLeafNode(version, null, "2", system);
 				} else {
 					menuVo2 = MenuVo2.createTreeNode(version, "2", system);
-
+					if(system.equals(systemName)&&version.equals(versionName)){
+						menuVo2.setState("open");
+					}
 				}
 				List<MenuVo2> menuVos3 = new LinkedList<>();
 				for (String env : envList) {

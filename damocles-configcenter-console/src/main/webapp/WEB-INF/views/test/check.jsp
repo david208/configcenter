@@ -33,22 +33,72 @@ input {
 <script>
 
 function formatOpt(opt,row){
-	return "<a href='javascript:void(0);' onclick='updateConfig("+row.id+")'>修改</a>";		
+	var name="'"+row.name+"'";
+	return "<a href='javascript:void(0);' onclick=updateConfig("+name+")>修改</a>";			
 }
 
-function formatOpt1(opt,row){
-	return "<a href='javascript:void(0);' onclick='checkConfig("+row.name+")'>删除</a>";	
+function formatOpt1(opt,row){	
+	var name="'"+row.name+"'";
+	return "<a href='javascript:void(0);' onclick=deletes("+name+")>删除</a>";		
 }
-function updateConfig(id) {
-	window.location.href = "${ctx}/admin/config/active/edit?id="+id;
+function updateConfig(name) {
+	window.location.href = "${ctx}/editProperty?system=${system}&version=${version}&env=${env}&name="+name;
 }
 
-function checkConfig(name) {
-	window.location.href = "${ctx}/delete?system=${system}&version=${version}&env=${env}&name="+name;
+function deletes(name) {  
+    $.messager.defaults = { ok: "是", cancel: "否" };  
+    $.messager.confirm("操作提示", "您确定要执行删除操作吗？", function (data) {  
+        if (data) {               
+
+        	$.ajax({
+        		url : "${ctx}/deleteProperty?system=${system}&version=${version}&env=${env}&name="+name,
+        		dataType : 'json',
+        		success:function( data ){
+        			if(data.code == 1){
+        				$.messager.show({
+        					title:'处理成功',
+        					msg:'删除成功',
+        					timeout:5000,
+        					showType:'slide',
+        				});
+        			}
+        			else {
+        				$.messager.alert('Error',data.attachment);	
+        			}
+        			$("#tenderDatagridMain").datagrid('reload');
+        		}
+
+        	});
+        }  
+        else {              
+        }  
+    });     	
+} 
+
+function deleteConfig(name) {
+	$.ajax({
+		url : "${ctx}/deleteProperty?system=${system}&version=${version}&env=${env}&name="+name,
+		dataType : 'json',
+		success:function( data ){
+			if(data.code == 1){
+				$.messager.show({
+					title:'处理成功',
+					msg:'删除成功',
+					timeout:5000,
+					showType:'slide',
+				});
+			}
+			else {
+				$.messager.alert('Error',data.attachment);	
+			}
+			$("#tenderDatagridMain").datagrid('reload');
+		}
+
+	});
 }
 
 function add(){
-	window.location.href = '${ctx}/admin/config/active/add?search_EQ_configCode='+"1002";
+   window.location.href = '${ctx}/addProperty?system=${system}&version=${version}&env=${env}';
 }
 function formatUrl(product){
 	debugger;
@@ -103,18 +153,75 @@ function formatUrl(product){
 			<th data-options="field:'value',width:400,align:'center'">值</th>
 			<th data-options="field:'memo',width:100,align:'center'">备注</th>
 			
-		    <th data-options="field:'opt',formatter:formatOpt,width:90,align:'center'">操作</th> 
-		    <th data-options="field:'opt1',formatter:formatOpt1,width:90,align:'center'">查看</th> 
+		    <th data-options="field:'opt',formatter:formatOpt,width:90,align:'center'">修改</th> 
+		    <th data-options="field:'opt1',formatter:formatOpt1,width:90,align:'center'">删除</th> 
 		</tr>
 	</thead>
 
 </table>
 
 <div id ='tb'>
+<table> 
+   <tr>
+    <td><label>TOKEN:</label></td>
+    <td>
+     <input value="${longToken}" style="width:300px"></input>
+    </td>
+    <td><a href="javascript:void(0);" class="easyui-linkbutton"
+		iconCls="icon-reload" style="vertical-align: middle;"
+		onclick="add();">新增</a>
+    </td>
+   </tr>	
+</table>
+<form name="searchForm" id="searchForm" method="post" enctype="multipart/form-data" 
+  > 
+ <p>Upload File: <input type="file" name="file" /> 
+ <input onclick="uploadAndSubmit();" type="button" value="Submit" /></p> 
+ </form>
+ 
+ <div><span id="bytesRead"> 
+ </span> <span id="bytesTotal"></span> 
+ </div> 
+
 </div>
 
 
 <script type="text/javascript">
+function uploadAndSubmit() { 
+	debugger;
+		$("#searchForm").form('submit', {
+			url:"${ctx}/importProperties?system=${system}&version=${version}&env=${env}",
+			success : function(data) {
+				eval(" var data = "+data);
+				if (data.code >= 0) {
+				
+					$.messager.show({
+						title : '导入成功',
+						msg :'导入配置成功',
+						timeout : 5000,
+						showType : 'slide'
+					});
+					clearForm();
+				} else {
+					$.messager.show({
+						title : '导入失败',
+						msg : '页面存在主键不允许上传',
+						timeout : 5000,
+						showType : 'slide'
+					});
+				}
+				$("#tenderDatagridMain").datagrid('reload');
+			}
+		});
+	};
+	function clearForm() {
+		$('#searchForm').form('clear');
+	};
+	function back(){
+		$("#tenderDatagridMain").datagrid('reload');
+	}
+
+
 function hashCode(str) { // java String#hashCode
     var hash = 0;
     for (var i = 0; i <  str.length; i++) {
