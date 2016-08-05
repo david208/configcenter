@@ -19,8 +19,11 @@ public class EncryptPropertyPlaceholderConfigurer extends PropertyPlaceholderCon
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props)
 			throws BeansException {
 
-		String auth = props.getProperty("zoo.admin.auth");
-		if (StringUtils.isNoneEmpty(auth)) {
+		String auth = props.getProperty("zoo.admin.auth.sec");
+		if (StringUtils.isEmpty(auth)) {
+		auth = System.getProperty("zoo.admin.auth.sec");
+		}
+		if (StringUtils.isNotEmpty(auth)) {
 			props.setProperty("zoo.admin.auth", decodeBuffer(auth));
 		}
 
