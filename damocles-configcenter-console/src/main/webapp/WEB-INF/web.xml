@@ -28,7 +28,7 @@
 
 	<!-- Filter 定义 -->
 	<!-- Character Encoding filter -->
-	<filter>
+	<!-- <filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
 		<init-param>
@@ -45,7 +45,7 @@
 		<url-pattern>/*</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
-	</filter-mapping>
+	</filter-mapping> -->
 
 
 	<!-- Spring Security filter -->
